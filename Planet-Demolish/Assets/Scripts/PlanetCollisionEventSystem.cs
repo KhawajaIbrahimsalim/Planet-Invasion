@@ -17,12 +17,13 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     public GameObject Fire_Particles;
     public GameObject Fire_Particles_2;
 
+    [HideInInspector] public bool IfHealthIsHalf = false;
+
     private GameObject MeteorSpawnPoint_1;
     private GameObject MeteorSpawnPoint_2;
     private GameObject HealthBar;
     private bool IsDestroyed = false;
     private bool IsHit = false;
-    private bool IfHealthIsHalf = false;
     private GameObject Hit_particleSystem;
     private GameObject explostionParticles;
     private GameObject Fire_particleSystem;
@@ -104,13 +105,7 @@ public class PlanetCollisionEventSystem : MonoBehaviour
         {
             if (Fire_particleSystem == null)
             {
-                Fire_particleSystem = Instantiate(Fire_Particles, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z - 70), Quaternion.identity);
-            }
-
-            else
-            {
-                //Fire_particleSystem.transform.position = new Vector3(Fire_particleSystem.transform.position.x, Fire_particleSystem.transform.position.y, Fire_particleSystem.transform.position.z - 7);
-                Fire_particleSystem.GetComponent<ParticleSystem>().startSize += 40;
+                Fire_particleSystem = Instantiate(Fire_Particles, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z - 20), Quaternion.identity);
             }
 
             if (Fire_particleSystem_2 == null && Fire_particleSystem_2_2 == null)
@@ -131,11 +126,10 @@ public class PlanetCollisionEventSystem : MonoBehaviour
                 // Set Position and rotation
                 Fire_particleSystem_2_2.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
             }
-
-            IfHealthIsHalf = false;
         }
     }
 
+    [System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Projectile"))
@@ -153,6 +147,11 @@ public class PlanetCollisionEventSystem : MonoBehaviour
             if (Health <= MaxHealth / 2)
             {
                 IfHealthIsHalf = true;
+            }
+
+            else
+            {
+                IfHealthIsHalf = false;
             }
 
             // If Health is 0 (Destroy the Planet)

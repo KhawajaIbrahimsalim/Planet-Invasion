@@ -4,26 +4,36 @@ using UnityEngine.UI;
 [System.Serializable]
 public class GameController : MonoBehaviour
 {
-    public GameObject[] Planets;
+    [SerializeField] private float DelayBeforeSpawn;
 
-    private GameObject CurrentPlanet;
-    private GameObject HealthBar;
+    public GameObject[] Planets;
+    public GameObject CurrentPlanet;
+
+    private float Temp_DelayBeforeSpawn;
 
     private void Awake()
     {
         CurrentPlanet = GameObject.FindGameObjectWithTag("Planet");
-        HealthBar = GameObject.Find("HealthBar");
+
+        Temp_DelayBeforeSpawn = DelayBeforeSpawn;
     }
 
     private void Update()
     {
-        if (CurrentPlanet == null) 
+        if (CurrentPlanet == null && DelayBeforeSpawn <= 0f) 
         {
             int RandomPlanet = Random.Range(0, Planets.Length);
 
             CurrentPlanet = Instantiate(Planets[RandomPlanet], gameObject.transform.position, Quaternion.identity);
 
             CurrentPlanet.transform.parent = gameObject.transform;
+
+            DelayBeforeSpawn = Temp_DelayBeforeSpawn;
+        }
+
+        if (CurrentPlanet == null)
+        {
+            DelayBeforeSpawn -= Time.deltaTime;
         }
     }
 
