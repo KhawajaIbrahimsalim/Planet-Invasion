@@ -37,7 +37,7 @@ public class SaveLoad : MonoBehaviour
     void Start()
     {
         savePath = Application.persistentDataPath + "/Max93.json";
-        //File.Delete(savePath);
+        File.Delete(savePath);
 
         // Load:
 
@@ -86,11 +86,14 @@ public class SaveLoad : MonoBehaviour
                 // Find the new spawned Planet
                 Planet = GameObject.FindGameObjectWithTag("Planet");
 
-                // Load Health
-                Planet.GetComponent<PlanetCollisionEventSystem>().Health = data.Health;
+                if (Planet)
+                {
+                    // Load Health
+                    Planet.GetComponent<PlanetCollisionEventSystem>().Health = data.Health;
 
-                // Show Health
-                HealthBar.GetComponent<Slider>().value = Planet.GetComponent<PlanetCollisionEventSystem>().Health / Planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth;
+                    // Show Health
+                    HealthBar.GetComponent<Slider>().value = Planet.GetComponent<PlanetCollisionEventSystem>().Health / Planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth;
+                }
             }
 
             // For Mergable objects Load
@@ -99,7 +102,7 @@ public class SaveLoad : MonoBehaviour
                 {
                     if (data.Tiles[i] != null)
                     {
-                        if (data.Mergable[i])
+                        if (data.Mergable[i] != null)
                         {
                             // Spawn mergable
                             mergable = Instantiate(data.Mergable[i]);
@@ -110,7 +113,7 @@ public class SaveLoad : MonoBehaviour
                             // Set LocalPosition
                             mergable.transform.localPosition = Vector3.zero;
 
-                            mergable.transform.parent.GetComponent<TileEmptyStatus>().IsEmpty = false;
+                            //mergable.transform.parent.GetComponent<TileEmptyStatus>().IsEmpty = false;
 
                             // Load count
                             GetComponent<SpawnNewMergableObjects>().count++;
@@ -179,8 +182,6 @@ public class SaveLoad : MonoBehaviour
 
             // Save IfHealthIsHalf to Activate particle effects (StartParticlesFor_HalfHealth is a checking variable to check if it is Half Health of the Planet)
             data.IfHealthIsHalf = Planet.GetComponent<PlanetCollisionEventSystem>().IfHealthIsHalf;
-
-            Debug.Log(Planet.GetComponent<PlanetCollisionEventSystem>().IfHealthIsHalf);
         }
 
         else

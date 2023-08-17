@@ -3,6 +3,7 @@ using UnityEngine;
 public class ProjectileMovement : MonoBehaviour
 {
     [SerializeField] private float Speed;
+    public float Damage;
 
     private GameObject target;
 
@@ -13,6 +14,11 @@ public class ProjectileMovement : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void Update()
+    {
+        Destroy(gameObject, 10f);
+    }
+
     void FixedUpdate()
     {
         if (target != null)
@@ -21,7 +27,7 @@ public class ProjectileMovement : MonoBehaviour
 
             Direction.Normalize();
 
-            transform.position += Direction * Time.deltaTime * Speed;
+            transform.position += Speed * Time.deltaTime * Direction;
         }
     }
 }

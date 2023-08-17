@@ -107,8 +107,10 @@ MonoBehaviour:
   Explosion_Particles: {fileID: 4914716930404006884, guid: aed12c224fbc8704d8eaa07a52e88f44, type: 3}
   Hit_Particles: {fileID: 5704565060202176987, guid: e54c3b13ba6a9ab4fb7314e57d06bf23, type: 3}
   Planet_Fire_Particles: {fileID: 4763415993387732249, guid: 2a91c99a36bc0384e9fce35b8bfbdc46, type: 3}
+  Impact_Particles: {fileID: 4199882915999949167, guid: 2f5f98d926dfb9e4aa184c387a9df1c6, type: 3}
   Fire_Particles: {fileID: 7509723122820951257, guid: 7724405701b7b334fb93c3c002b86550, type: 3}
   Fire_Particles_2: {fileID: 1498861500895935573, guid: 5bc3f0b69e9579946b8b7752c308b718, type: 3}
+  IfHealthIsHalf: 0
 --- !u!114 &-7156914589188208950
 MonoBehaviour:
   m_ObjectHideFlags: 0

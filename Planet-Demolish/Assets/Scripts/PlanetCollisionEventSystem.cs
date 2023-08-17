@@ -12,6 +12,7 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     public GameObject Explosion_Particles;
     public GameObject Hit_Particles;
     public GameObject Planet_Fire_Particles;
+    public GameObject Impact_Particles;
 
     [Header("Half Health Particle Systems:")]
     public GameObject Fire_Particles;
@@ -31,6 +32,11 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     private GameObject Fire_particleSystem_2_2;
     private GameObject GameController;
     private GameObject[] Projectile;
+
+    private void Awake()
+    {
+        MaxHealth = 15000;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -134,17 +140,14 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     {
         if (other.CompareTag("Projectile"))
         {
-            // Destroy the projectile
-            Destroy(other.gameObject);
-
             // Decrease Planet Health
-            Health--;
+            Health -= other.gameObject.GetComponent<ProjectileMovement>().Damage;
 
             // Also Decrease it in Slider
             HealthBar.GetComponent<Slider>().value = Health / MaxHealth;
 
             // If Health is half
-            if (Health <= MaxHealth / 2)
+            if (Health <= MaxHealth / 4)
             {
                 IfHealthIsHalf = true;
             }
@@ -164,6 +167,9 @@ public class PlanetCollisionEventSystem : MonoBehaviour
             {
                 IsHit = true;
             }
+
+            // Destroy the projectile
+            Destroy(other.gameObject);
         }
     }
 }

@@ -1,18 +1,27 @@
+using TMPro;
 using UnityEngine;
 
 public class ProjectileSpawning : MonoBehaviour
 {
-    [SerializeField] private float SpawnDelay;
+    [Header("Spawn Properties:")]
+    public float SpawnDelay;
     [SerializeField] private GameObject Projectile;
     [SerializeField] private GameObject ProjectileSpawnPoint;
 
-    private float Temp_SpawnDelay;
+    [Header("Damage Properties:")]
+    public float Damage;
+    public TextMeshProUGUI TimesPower_txt;
+
+    [HideInInspector]public float Temp_SpawnDelay;
+
     private bool IsTouched;
 
     // Start is called before the first frame update
     void Start()
     {
         Temp_SpawnDelay = SpawnDelay;
+
+        Damage = float.Parse(TimesPower_txt.text);
     }
 
     // Update is called once per frame
@@ -34,7 +43,9 @@ public class ProjectileSpawning : MonoBehaviour
 
             if (IsTouched)
             {
-                Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+                GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+
+                projectile.GetComponent<ProjectileMovement>().Damage = Damage;
 
                 IsTouched = false;
             }
@@ -42,7 +53,9 @@ public class ProjectileSpawning : MonoBehaviour
 
         if (SpawnDelay <= 0)
         {
-            Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+            GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+
+            projectile.GetComponent<ProjectileMovement>().Damage = Damage;
 
             SpawnDelay = Temp_SpawnDelay;
         }

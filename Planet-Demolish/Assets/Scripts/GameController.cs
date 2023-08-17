@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
 
     public GameObject[] Planets;
     public GameObject CurrentPlanet;
+    public bool IsAutoClickActive = false;
 
     private float Temp_DelayBeforeSpawn;
 
@@ -40,5 +41,10 @@ public class GameController : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void AutoClick()
+    {
+        IsAutoClickActive = true;
     }
 }
