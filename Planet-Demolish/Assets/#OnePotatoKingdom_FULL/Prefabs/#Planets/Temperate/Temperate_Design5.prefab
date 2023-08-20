@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotation: {x: 10, y: 10, z: 10}
-  meshObject: {fileID: 8988947418518893971, guid: 97748edb8f1a01242b48008cad80b31d, type: 3}
+  meshObject: {fileID: 9132147168263677320}
   rotationSpeed: 50
   randomize: 0
   maxSpeed: 0

@@ -71,11 +71,11 @@ public class Merge : MonoBehaviour
                     // Decrease the count as one slot is now empty
                     GameController.GetComponent<SpawnNewMergableObjects>().count--;
                 }
-
-                Destroy(other.gameObject);
-
-                Destroy(gameObject);
             }
+
+            Destroy(other.gameObject);
+
+            Destroy(gameObject);
         }
     }
 }

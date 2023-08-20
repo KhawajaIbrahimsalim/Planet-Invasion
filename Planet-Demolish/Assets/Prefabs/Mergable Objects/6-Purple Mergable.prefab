@@ -300,7 +300,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -338,3 +338,4 @@ MonoBehaviour:
   Damage: 32
   TimesPower_txt: {fileID: 4362467701215684408}
   Temp_SpawnDelay: 0
+  IsDamageIncreased: 0

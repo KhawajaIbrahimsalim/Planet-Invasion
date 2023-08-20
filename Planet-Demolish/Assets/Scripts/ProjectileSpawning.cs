@@ -12,7 +12,8 @@ public class ProjectileSpawning : MonoBehaviour
     public float Damage;
     public TextMeshProUGUI TimesPower_txt;
 
-    [HideInInspector]public float Temp_SpawnDelay;
+    [HideInInspector] public float Temp_SpawnDelay;
+    [HideInInspector] public bool IsDamageIncreased = false;
 
     private bool IsTouched;
 

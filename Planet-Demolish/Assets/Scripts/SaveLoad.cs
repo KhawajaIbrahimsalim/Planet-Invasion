@@ -1,4 +1,5 @@
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,13 @@ public class SaveData
     public bool IsNotFill;
     public int NoOfTilesFill;
     public bool IfHealthIsHalf;
+    public float AutoClick_Delay;
+    public float DelayAfterPressingTheButton;
+    public int TouchCount;
+    public float DelayDamage5x;
+    public bool IsAutoClickActive = false;
+    public bool Damage5xIsActive = false;
+    public bool IsDelayChanged = true;
 
     public float Health;
 }
@@ -25,6 +33,7 @@ public class SaveLoad : MonoBehaviour
     public GameObject[] MergablePrefab;
     public GameObject Planet;
     public GameObject HealthBar;
+    public GameObject AutoClick_txt;
 
     private string savePath;
     GameObject mergable;
@@ -121,6 +130,28 @@ public class SaveLoad : MonoBehaviour
                     }
                 }
             }
+
+            // Load Auto Click Properties
+            {
+                GetComponent<Boosts>().AutoClick_Delay = data.AutoClick_Delay;
+
+                GetComponent<Boosts>().DelayAfterPressingTheButton = data.DelayAfterPressingTheButton;
+
+                GetComponent<Boosts>().IsDelayChanged = data.IsDelayChanged;
+
+                GetComponent<GameController>().IsAutoClickActive = data.IsAutoClickActive;
+            }
+
+            // Load Damage 5x Properties
+            {
+                GetComponent<Boosts>().TouchCount = data.TouchCount;
+
+                AutoClick_txt.GetComponent<TextMeshProUGUI>().text = "Clicks: " + data.TouchCount + "/" + GetComponent<Boosts>().MaxTouch;
+
+                GetComponent<Boosts>().DelayDamage5x = data.DelayDamage5x;
+
+                GetComponent<GameController>().Damage5xIsActive = data.Damage5xIsActive;
+            }
         }
     }
 
@@ -195,6 +226,26 @@ public class SaveLoad : MonoBehaviour
 
         // Save NoOfTiles
         data.NoOfTilesFill = GetComponent<SpawnNewMergableObjects>().NoOfTilesFill;
+
+        // Save Auto Click Properties
+        {
+            data.AutoClick_Delay = GetComponent<Boosts>().AutoClick_Delay;
+
+            data.DelayAfterPressingTheButton = GetComponent<Boosts>().DelayAfterPressingTheButton;
+
+            data.IsDelayChanged = GetComponent<Boosts>().IsDelayChanged;
+
+            data.IsAutoClickActive = GetComponent<GameController>().IsAutoClickActive;
+        }
+
+        // Damage 5x Properties
+        {
+            data.TouchCount = GetComponent<Boosts>().TouchCount;
+
+            data.DelayDamage5x = GetComponent<Boosts>().DelayDamage5x;
+
+            data.Damage5xIsActive = GetComponent<GameController>().Damage5xIsActive;
+        }
 
         // save data to Json
         string json = JsonUtility.ToJson(data);
