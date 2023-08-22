@@ -77,7 +77,7 @@ public class SpawnNewMergableObjects : MonoBehaviour
                 {
                     GameObject newObj = Instantiate(ObjToSpawn_ByButton, Tiles[Random_Index].GetComponent<RectTransform>().position, Quaternion.identity);
 
-                    newObj.transform.parent = Tiles[Random_Index].transform;
+                    newObj.transform.SetParent(Tiles[Random_Index].transform, false);
 
                     newObj.transform.localPosition = new Vector3(0, 0, 0);
 

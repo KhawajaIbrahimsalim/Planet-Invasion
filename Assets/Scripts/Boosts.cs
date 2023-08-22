@@ -137,7 +137,7 @@ public class Boosts : MonoBehaviour
 
                 DelayDamage5x_txt.SetActive(true);
 
-                Debug.Log("Damage 5x");
+                // Multiply by 5 with Damage
                 foreach (var mergeable in MergeableObjects)
                 {
                     if (mergeable.GetComponent<ProjectileSpawning>().IsDamageIncreased == false)
@@ -148,6 +148,7 @@ public class Boosts : MonoBehaviour
                     }
                 }
 
+                // Reset Every Change
                 if (DelayDamage5x <= 0)
                 {
                     DelayDamage5x_txt.SetActive(false);
@@ -162,7 +163,7 @@ public class Boosts : MonoBehaviour
                     {
                         mergeable.GetComponent<ProjectileSpawning>().IsDamageIncreased = false;
 
-                        mergeable.GetComponent<ProjectileSpawning>().Damage = float.Parse(mergeable.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text);
+                        mergeable.GetComponent<ProjectileSpawning>().Damage = float.Parse(mergeable.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text);
                     }
                 }
 

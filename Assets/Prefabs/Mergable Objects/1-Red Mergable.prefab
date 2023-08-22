@@ -316,6 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NewObj: {fileID: 3672221714862338789, guid: 4bf4b0618746d2e4b83c4c75c1084ece, type: 3}
   LeverageMeter: 10
+  _mat: {fileID: 2100000, guid: 7407f4b2113f77b4199529d6cecb92c5, type: 2}
   GameController: {fileID: 0}
   Priority: 0
 --- !u!114 &-5727422154111006650
@@ -335,5 +336,7 @@ MonoBehaviour:
   ProjectileSpawnPoint: {fileID: 3971811006548706338}
   Damage: 1
   TimesPower_txt: {fileID: 725144593921716030}
+  AttackAnimation: {fileID: 0}
+  AnimDelay: 0
   Temp_SpawnDelay: 0
   IsDamageIncreased: 0
