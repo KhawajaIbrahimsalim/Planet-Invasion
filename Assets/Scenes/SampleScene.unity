@@ -2533,18 +2533,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tiles: []
+  MergablePrefab: {fileID: 3566086979467156005, guid: 3d91a70bb7001e04a8e516aaaa2d7582, type: 3}
   Mergable: []
-  MergablePrefab:
-  - {fileID: 8366305747016945205, guid: dc0505a26d8c9f14e9cc7c488001e879, type: 3}
-  - {fileID: 3672221714862338789, guid: 4bf4b0618746d2e4b83c4c75c1084ece, type: 3}
-  - {fileID: 7068792348444091845, guid: 16ccac98794079f4b8ba0609d951d4e0, type: 3}
-  - {fileID: 5644459565314256542, guid: 5d0537ab7e068884a97271d9e0984236, type: 3}
-  - {fileID: 8469147076629475723, guid: c9952c4aa0c8a8345800caf404c143cc, type: 3}
-  - {fileID: 6348626252992542868, guid: a027e6b4641bf814f98c01917ef38b35, type: 3}
-  - {fileID: 1736640353910219305, guid: 2d7860ff2582ed34ebe7be40a46c94b9, type: 3}
-  - {fileID: 4380073201904060924, guid: 28eafcd38ce47ab499583a6de758f6b9, type: 3}
-  - {fileID: 4380073201904060924, guid: cf36ecb4a3fd39d4da1334a10a158eea, type: 3}
-  - {fileID: 4380073201904060924, guid: 9abf8647ca9da6c4182ab6f5e0c012aa, type: 3}
   Planet: {fileID: 0}
   HealthBar: {fileID: 1198274175}
   AutoClick_txt: {fileID: 374082381}

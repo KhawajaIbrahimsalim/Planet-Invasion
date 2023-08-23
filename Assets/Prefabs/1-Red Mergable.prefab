@@ -76,13 +76,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NewObj: {fileID: 3566086979467156005, guid: 9911f4580d4d5ba4a8ef52985d014a17, type: 3}
   colors:
-  - {r: 0.7254902, g: 0, b: 0.023529412, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 1, g: 1, b: 0, a: 1}
-  - {r: 0, g: 1, b: 1, a: 1}
-  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0, b: 0, a: 1}
   LeverageMeter: 10
+  TimesPower_txt: {fileID: 1762356955766990735}
   GameController: {fileID: 0}
   Priority: 0
   ColorIndex: 0
@@ -367,6 +363,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5489375169599827706, guid: 3008c9a69ac234a40b1d671a3701727c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7407f4b2113f77b4199529d6cecb92c5, type: 2}
     - target: {fileID: 559618886584071862, guid: 3008c9a69ac234a40b1d671a3701727c, type: 3}
       propertyPath: m_SortingLayer
       value: 0

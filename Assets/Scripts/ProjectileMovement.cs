@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[System.Serializable]
 public class ProjectileMovement : MonoBehaviour
 {
     [SerializeField] private float Speed;

@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 
+[System.Serializable]
 public class ProjectileSpawning : MonoBehaviour
 {
     [Header("Spawn Properties:")]

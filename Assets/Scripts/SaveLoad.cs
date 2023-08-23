@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class SaveData
 {
     public GameObject[] Tiles;
-    public GameObject[] Mergable;
+    public Color[] MergableColors;
+    public string[] TimesPower_txt;
     public string CurrentPlanet_name;
     public float TileLength;
     public int count;
@@ -29,8 +30,8 @@ public class SaveData
 public class SaveLoad : MonoBehaviour
 {
     public GameObject[] Tiles;
+    public GameObject MergablePrefab;
     public GameObject[] Mergable;
-    public GameObject[] MergablePrefab;
     public GameObject Planet;
     public GameObject HealthBar;
     public GameObject AutoClick_txt;
@@ -46,7 +47,7 @@ public class SaveLoad : MonoBehaviour
     void Start()
     {
         savePath = Application.persistentDataPath + "/Max93.json";
-        File.Delete(savePath);
+        //File.Delete(savePath);
 
         // Load:
 
@@ -111,22 +112,25 @@ public class SaveLoad : MonoBehaviour
                 {
                     if (data.Tiles[i] != null)
                     {
-                        if (data.Mergable[i] != null)
-                        {
-                            // Spawn mergable
-                            mergable = Instantiate(data.Mergable[i]);
+                        // Spawn mergable
+                        mergable = Instantiate(MergablePrefab);
 
-                            // Set Parent
-                            mergable.transform.parent = data.Tiles[i].transform;
+                        // Set Color
+                        mergable.transform.GetChild(1).transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material.color = data.MergableColors[i];
 
-                            // Set LocalPosition
-                            mergable.transform.localPosition = Vector3.zero;
+                        // Set TimesPower_txt
+                        mergable.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = data.TimesPower_txt[i];
 
-                            //mergable.transform.parent.GetComponent<TileEmptyStatus>().IsEmpty = false;
+                        // Set Parent
+                        mergable.transform.SetParent(data.Tiles[i].transform, false);
 
-                            // Load count
-                            GetComponent<SpawnNewMergableObjects>().count++;
-                        }
+                        // Set LocalPosition
+                        mergable.transform.localPosition = Vector3.zero;
+
+                        //mergable.transform.parent.GetComponent<TileEmptyStatus>().IsEmpty = false;
+
+                        // Load count
+                        GetComponent<SpawnNewMergableObjects>().count++;
                     }
                 }
             }
@@ -165,7 +169,8 @@ public class SaveLoad : MonoBehaviour
         SaveData data = new SaveData();
 
         data.Tiles = new GameObject[Tiles.Length];
-        data.Mergable = new GameObject[Tiles.Length];
+        data.MergableColors = new Color[Tiles.Length];
+        data.TimesPower_txt = new string[Tiles.Length];
 
         // IsEmpty is equal to false if tile has a child, means it is fill (not empty)
         foreach (var item in Tiles)
@@ -185,12 +190,16 @@ public class SaveLoad : MonoBehaviour
                 // Save Tiles
                 data.Tiles[i] = Tiles[i];
 
-                // To find the MergablePrefab for this Tile's current child and store that prefab in the data save file (Json)
-                for (int j = 0; j < MergablePrefab.Length; j++)
+                // To find the Mergable for this Tile's current child and store that prefab in the data save file (Json)
+                for (int j = 0; j < Mergable.Length; j++)
                 {
-                    if (MergablePrefab[j] && MergablePrefab[j].name + "(Clone)" == Tiles[i].transform.GetChild(0).gameObject.name)
+                    if (Mergable[j] && Mergable[j].name == Tiles[i].transform.GetChild(0).gameObject.name)
                     {
-                        data.Mergable[i] = MergablePrefab[j];
+                        // Save color of the mergeable Object
+                        data.MergableColors[i] = Mergable[j].transform.GetChild(1).transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material.color;
+
+                        // Save TimesPower_txt of the Mergeable Object
+                        data.TimesPower_txt[i] = Mergable[j].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
                     }
                 }
             }
@@ -199,7 +208,6 @@ public class SaveLoad : MonoBehaviour
             {
                 // If condition is not fullfilled then null the index
                 data.Tiles[i] = null;
-                data.Mergable[i] = null;
             }
         }
 

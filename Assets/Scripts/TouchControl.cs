@@ -3,12 +3,6 @@ using UnityEngine;
 [System.Serializable]
 public class TouchControl : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Variables to keep track of the dragging state and the selected object
     bool dragging = false;
     GameObject selectedObject;
@@ -25,11 +19,10 @@ public class TouchControl : MonoBehaviour
             {
                 // Cast a ray from the camera to the touch position
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit hit;
                 // Check if the ray hits an object with a collider
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    if (hit.collider.gameObject.tag == "Mergable")
+                    if (hit.collider.gameObject.CompareTag("Mergable"))
                     {
                         // Set the selected object to the hit object and set dragging to true
                         selectedObject = hit.collider.gameObject;

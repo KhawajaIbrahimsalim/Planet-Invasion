@@ -7,39 +7,62 @@ public class Merge : MonoBehaviour
     public GameObject NewObj;
     public Color[] colors;
     public int LeverageMeter;
+    public TextMeshProUGUI TimesPower_txt;
 
     public GameObject GameController;
     public int Priority;
-    public int ColorIndex;
+    public int ColorIndex = 0;
+
+    private float goldenRatio = 0.618033988749895f;
+    private float h = 0.0f;
+    private int NumColor = 20;
 
     // Start is called before the first frame update
     void Start()
     {
+        colors = new Color[NumColor];
+
         GameController = GameObject.Find("GameController");
 
         Priority = Random.Range(-LeverageMeter, LeverageMeter);
 
-        for (int i = 0; i < colors.Length; i++)
+        // This algorith is will give a sequence of colors in a pattern (Note: They are still no randomly generating
+        // colors they have a pattern)
+        for (int i = 1; i < colors.Length; i++)
         {
+            // Set Colors in the colors array
+            h += goldenRatio;
+            h %= 1;
+            colors[i] = Color.HSVToRGB(h, 1f, 1f);
+
             // Set that material with new color to newObj material
             Transform Child = gameObject.transform.GetChild(1);
             Transform GrandChild = Child.transform.GetChild(1);
 
             if (GrandChild.gameObject.GetComponent<SkinnedMeshRenderer>().material.color == colors[i])
             {
-                ColorIndex = i;
+                ColorIndex = i;       
             }
         }
+
+        // Change Name
+        gameObject.name = ColorIndex.ToString();
     }
 
     //[System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Mergable")) 
+        if (other.CompareTag("Mergable"))
         {
             // First both gameobject and other should have same ColorIndex
-            if (gameObject.name == other.gameObject.name && Input.touchCount > 0)
+            if (gameObject.name == other.gameObject.name && TimesPower_txt.text == other.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text && Input.touchCount > 0)
             {
+                // Reset the values
+                if (ColorIndex + 1 >= colors.Length)
+                {
+                    ColorIndex = 0;
+                }
+
                 // If both are equal then we will again search for a random number
                 if (Priority == other.gameObject.GetComponent<Merge>().Priority)
                 {
@@ -72,11 +95,8 @@ public class Merge : MonoBehaviour
         // Set Tag
         newObj.tag = "Mergable";
 
-        // Change Name
-        newObj.name = ColorIndex.ToString();
-
         // Set Damage
-        SetDamage(newObj);
+        SetTimesPower_txt(newObj);
 
         // Set Material
         SetMaterial(newObj);
@@ -116,7 +136,7 @@ public class Merge : MonoBehaviour
         }
     }
 
-    private void SetDamage(GameObject newObj)
+    private void SetTimesPower_txt(GameObject newObj)
     {
         Transform ThisChild = gameObject.transform.GetChild(0);
         Transform NewChild = newObj.transform.GetChild(0);
