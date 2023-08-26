@@ -67,40 +67,46 @@ public class SpawnNewMergableObjects : MonoBehaviour
     }
 
     public void SpawnObject()
-    {    
-        if (count < Tiles.Length)
+    {
+        if (GetComponent<GameController>().IsWithInCost == true)
         {
-            while (IsNotFill)
+            if (count < Tiles.Length)
             {
-                // First check if that index Tile is Empty if is then Spawn if not....
-                if (Tiles[Random_Index].GetComponent<TileEmptyStatus>().IsEmpty == true)
+                while (IsNotFill)
                 {
-                    GameObject newObj = Instantiate(ObjToSpawn_ByButton, Tiles[Random_Index].GetComponent<RectTransform>().position, Quaternion.identity);
-
-                    newObj.transform.SetParent(Tiles[Random_Index].transform, false);
-
-                    newObj.transform.localPosition = new Vector3(0, 0, 0);
-
-                    count++;
-
-                    Tiles[Random_Index].GetComponent<TileEmptyStatus>().IsEmpty = false;
-
-                    break; // Break the loop after spawning
-                }
-
-
-                // Then it will check else, where it will find the index of a tile where tile is Empty
-                else
-                {
-                    for (int i = 0; i < Tiles.Length; i++)
+                    // First check if that index Tile is Empty if is then Spawn if not....
+                    if (Tiles[Random_Index].GetComponent<TileEmptyStatus>().IsEmpty == true)
                     {
-                        if (Tiles[i].GetComponent<TileEmptyStatus>().IsEmpty == true)
+                        GameObject newObj = Instantiate(ObjToSpawn_ByButton, Tiles[Random_Index].GetComponent<RectTransform>().position, Quaternion.identity);
+
+                        newObj.transform.SetParent(Tiles[Random_Index].transform, false);
+
+                        newObj.transform.localPosition = new Vector3(0, 0, 0);
+
+                        count++;
+
+                        Tiles[Random_Index].GetComponent<TileEmptyStatus>().IsEmpty = false;
+
+                        break; // Break the loop after spawning
+                    }
+
+
+                    // Then it will check else, where it will find the index of a tile where tile is Empty
+                    else
+                    {
+                        for (int i = 0; i < Tiles.Length; i++)
                         {
-                            Random_Index = i;
+                            if (Tiles[i].GetComponent<TileEmptyStatus>().IsEmpty == true)
+                            {
+                                Random_Index = i;
+                            }
                         }
                     }
                 }
             }
-        }
+
+            // Make it false
+            GetComponent<GameController>().IsWithInCost = false;
+        }    
     }
 }

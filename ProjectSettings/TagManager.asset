@@ -11,6 +11,9 @@ TagManager:
   - Secondary
   - Planet
   - Projectile
+  - FX
+  - Untouchable
+  - Touchable
   layers:
   - Default
   - TransparentFX

@@ -54,7 +54,7 @@ public class Merge : MonoBehaviour
     {
         if (other.CompareTag("Mergable"))
         {
-            // First both gameobject and other should have same ColorIndex
+            // First both gameobject and other should have same name and ColorIndex
             if (gameObject.name == other.gameObject.name && TimesPower_txt.text == other.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text && Input.touchCount > 0)
             {
                 // Reset the values

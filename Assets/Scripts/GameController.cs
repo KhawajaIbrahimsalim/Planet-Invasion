@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [System.Serializable]
@@ -16,13 +17,30 @@ public class GameController : MonoBehaviour
 
     [Header("UI Properties:")]
     public GameObject PauseGame_Panel;
+    public GameObject UpgradePanel;
+    public GameObject FooterPanel;
+
+    [Header("Coins Properties:")]
+    public float Coins = 100;
+    public TextMeshProUGUI Coins_txt;
+    [SerializeField] private float BonusCoins;
+    [SerializeField] private GameObject FiveX_Coins_txt;
+
+    [Header("Buy Properties:")]
+    public float Cost;
+    public TextMeshProUGUI Cost_txt;
+    [SerializeField] private float IncreaseCost;
+    public bool IsWithInCost = false;
 
     private float Temp_DelayBeforeSpawn;
     private bool IsPaused = true;
+    private bool IsUpgradePanelOpened = false;
 
     private void Awake()
     {
         CurrentPlanet = GameObject.FindGameObjectWithTag("Planet");
+
+        Coins_txt.text = CompressNumber(Coins);
 
         Temp_DelayBeforeSpawn = DelayBeforeSpawn;
     }
@@ -30,12 +48,15 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         // If Player want to Pause the Game
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown("q"))
         {
             if (IsPaused)
             {
                 // Enable PausedGame_Panel
                 PauseGame_Panel.SetActive(true);
+
+                // Disable FooterPanel
+                FooterPanel.SetActive(false);
 
                 IsPaused = false;
             }
@@ -45,10 +66,13 @@ public class GameController : MonoBehaviour
                 // Disable PausedGame_Panel
                 PauseGame_Panel.SetActive(false);
 
+                EnablePropertiesWhen_Resumed();
+
                 IsPaused = true;
             }
         }
 
+        // To Spawn a new Planet when destroyed
         if (CurrentPlanet == null && DelayBeforeSpawn <= 0f) 
         {
             // Randomly choose new Planet
@@ -68,12 +92,39 @@ public class GameController : MonoBehaviour
 
             // Refill the Delay
             DelayBeforeSpawn = Temp_DelayBeforeSpawn;
+
+            // Diable the FiveX_Coins_txt
+            FiveX_Coins_txt.SetActive(false);
         }
 
         if (CurrentPlanet == null)
         {
             DelayBeforeSpawn -= Time.deltaTime;
         }
+
+        // Bonus Coins After Destroying a Planet
+        if (CurrentPlanet != null && CurrentPlanet.GetComponent<PlanetCollisionEventSystem>().Health <= 0)
+        {
+            Coins *= BonusCoins;
+
+            Coins_txt.text = CompressNumber(Coins);
+
+            // Activate the FiveX_Coins_txt
+            FiveX_Coins_txt.SetActive(true);
+        }
+    }
+
+    private void EnablePropertiesWhen_Resumed()
+    {
+        // Enable FooterPanel
+        FooterPanel.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        PauseGame_Panel.SetActive(false);
+
+        EnablePropertiesWhen_Resumed();
     }
 
     public void Quit()
@@ -91,5 +142,61 @@ public class GameController : MonoBehaviour
     public void Damage5x()
     {
         Damage5xIsActive = true;
+    }
+
+    // Connected Buy Button
+    public void Buy()
+    {
+        if (Coins >= Cost && GetComponent<SpawnNewMergableObjects>().IsNotFill == true)
+        {
+            // Substract the Cost from the total Coins
+            Coins -= Cost;
+
+            // Show Change
+            Coins_txt.text = CompressNumber(Coins);
+
+            // Increase Cost Value
+            {
+                Cost *= IncreaseCost;
+
+                Cost_txt.text = CompressNumber(Cost);
+            }
+
+            IsWithInCost = true;
+        }
+    }
+
+    public string CompressNumber(float num)
+    {
+        if (num >= 100000000000000)
+            return (num / 100000000000000f).ToString("0.#") + "aa";
+        if (num >= 10000000000000)
+            return (num / 10000000000000f).ToString("0.#") + "a";
+        if (num >= 1000000000000)
+            return (num / 1000000000000f).ToString("0.#") + "T";
+        if (num >= 1000000000)
+            return (num / 1000000000f).ToString("0.#") + "B";
+        if (num >= 1000000)
+            return (num / 1000000f).ToString("0.#") + "M";
+        if (num >= 1000)
+            return (num / 1000f).ToString("0.#") + "K";
+        return num.ToString("#,0");
+    }
+
+    public void OpenUpgradePanel()
+    {
+        if (IsUpgradePanelOpened == false)
+        {
+            UpgradePanel.SetActive(true);
+
+            IsUpgradePanelOpened = true;
+        }
+
+        else
+        {
+            UpgradePanel.SetActive(false);
+
+            IsUpgradePanelOpened = false;
+        }
     }
 }

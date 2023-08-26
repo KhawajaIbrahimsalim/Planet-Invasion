@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -107,30 +108,55 @@ public class PlanetCollisionEventSystem : MonoBehaviour
             Destroy(Hit_particleSystem, 0.8f);
         }
 
+        // Instantiate Particles for Half Health
         if (IfHealthIsHalf)
         {
             if (Fire_particleSystem == null)
             {
-                Fire_particleSystem = Instantiate(Fire_Particles, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z - 20), Quaternion.identity);
+                Fire_particleSystem = Instantiate(Fire_Particles, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z), Quaternion.identity);
             }
 
             if (Fire_particleSystem_2 == null && Fire_particleSystem_2_2 == null)
             {
-                // Set the Fire_particleSystem_2 as the child of the Spawnpoint and Set the SpawnPoint as the child of the planet
-                Fire_particleSystem_2 = Instantiate(Fire_Particles_2, MeteorSpawnPoint_1.transform.position, Quaternion.identity);
-                MeteorSpawnPoint_1.transform.parent = gameObject.transform;
-                Fire_particleSystem_2.transform.parent = MeteorSpawnPoint_1.transform;
+                // Fire_particleSystem_2
+                {
+                    // Description: Set the Fire_particleSystem_2 as the child of the Spawnpoint and Set the SpawnPoint as the child of the planet
 
-                // Set Position and rotation
-                Fire_particleSystem_2.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+                    // Spawn Fire_particleSystem_2
+                    Fire_particleSystem_2 = Instantiate(Fire_Particles_2, MeteorSpawnPoint_1.transform.position, Quaternion.identity);
 
-                // Set the Fire_particleSystem_2_2 as the child of the Spawnpoint and Set the SpawnPoint as the child of the planet
-                Fire_particleSystem_2_2 = Instantiate(Fire_Particles_2, MeteorSpawnPoint_2.transform.position, Quaternion.identity);
-                MeteorSpawnPoint_2.transform.parent = gameObject.transform;
-                Fire_particleSystem_2_2.transform.parent = MeteorSpawnPoint_2.transform;
+                    // Set Parent for MeteorSpawnPoint_1
+                    MeteorSpawnPoint_1.transform.parent = gameObject.transform;
 
-                // Set Position and rotation
-                Fire_particleSystem_2_2.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+                    // Set Rotation for MeteorSpawnPoint_1
+                    //MeteorSpawnPoint_1.transform.localRotation = new Quaternion(0, 0, 0, 0);
+
+                    // Set Parent for Fire_particleSystem_2
+                    Fire_particleSystem_2.transform.parent = MeteorSpawnPoint_1.transform;
+
+                    // Set Position and rotation
+                    Fire_particleSystem_2.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+                }
+
+                // Fire_particleSystem_2_2
+                {
+                    // Description: Set the Fire_particleSystem_2_2 as the child of the Spawnpoint and Set the SpawnPoint as the child of the planet
+
+                    // Spawn Fire_particleSystem_2_2
+                    Fire_particleSystem_2_2 = Instantiate(Fire_Particles_2, MeteorSpawnPoint_2.transform.position, Quaternion.identity);
+
+                    // Set Parent for MeteorSpawnPoint_2
+                    MeteorSpawnPoint_2.transform.parent = gameObject.transform;
+
+                    // Set Rotation for MeteorSpawnPoint_2
+                    //MeteorSpawnPoint_2.transform.localRotation = new Quaternion(0, 90, 0, 0);
+
+                    // Set Parent for Fire_particleSystem_2_2
+                    Fire_particleSystem_2_2.transform.parent = MeteorSpawnPoint_2.transform;
+
+                    // Set Position and rotation for Fire_particleSystem_2_2
+                    Fire_particleSystem_2_2.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+                }
             }
         }
     }
@@ -140,6 +166,12 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     {
         if (other.CompareTag("Projectile"))
         {
+            // Add Coins
+            float Coins = (GameController.GetComponent<GameController>().Coins += other.gameObject.GetComponent<ProjectileMovement>().Damage);
+
+            // Show Coins
+            GameController.GetComponent<GameController>().Coins_txt.GetComponent<TextMeshProUGUI>().text = GameController.GetComponent<GameController>().CompressNumber(Coins);
+
             // Decrease Planet Health
             Health -= other.gameObject.GetComponent<ProjectileMovement>().Damage;
 

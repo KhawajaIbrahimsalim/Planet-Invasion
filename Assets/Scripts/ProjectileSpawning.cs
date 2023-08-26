@@ -49,10 +49,10 @@ public class ProjectileSpawning : MonoBehaviour
                 IsTouched = true;
             }
 
-            if (touch.phase == TouchPhase.Moved && GameController.GetComponent<GameController>().IsAutoClickActive == false)
-            {
-                AttackAnimation.SetBool("AutoClick", false);
-            }
+            //if (touch.phase == TouchPhase.Moved && GameController.GetComponent<GameController>().IsAutoClickActive == false)
+            //{
+            //    AttackAnimation.SetBool("AutoClick", false);
+            //}
 
             if (touch.phase == TouchPhase.Ended)
             {
@@ -74,7 +74,7 @@ public class ProjectileSpawning : MonoBehaviour
             AnimDelay = Temp_AnimDelay;
         }
 
-        // If Auto Click is on the Play the Auto Click Animation
+        // If Auto Click is on, Play the Auto Click Animation
         else if (GameController.GetComponent<GameController>().IsAutoClickActive == true)
         {
             AttackAnimation.SetBool("AutoClick", true);
@@ -101,7 +101,7 @@ public class ProjectileSpawning : MonoBehaviour
         // Throw Animation
         if (SpawnDelay <= 0)
         {
-            // If Auto Click is on then stop this animation
+            // If Auto Click is off then stop this animation
             if (AttackAnimation.GetBool("AutoClick") == false && GameController.GetComponent<GameController>().IsAutoClickActive == false)
             {
                 AttackAnimation.SetBool("Throw", true);

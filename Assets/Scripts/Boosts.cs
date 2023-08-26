@@ -11,6 +11,7 @@ public class Boosts : MonoBehaviour
     public float DelayAfterPressingTheButton;
     public float MaxDelayAfterPressingTheButton;
     [SerializeField] private GameObject DelayAfterPressingTheButton_txt;
+    [SerializeField] private float ChangedSpawnDelay;
 
     [Header("Damage 5x Properties:")]
     public int TouchCount;
@@ -30,6 +31,9 @@ public class Boosts : MonoBehaviour
     {
         GameController = GameObject.Find("GameController");
         AutoClick_txt = GameObject.Find("Auto Click_txt");
+
+        // Show Touch
+        Damage5x_txt.GetComponent<TextMeshProUGUI>().text = "Clicks: " + TouchCount + "/" + MaxTouch;
 
         IsDelayChanged = true;
     }
@@ -58,7 +62,7 @@ public class Boosts : MonoBehaviour
                 {
                     if (mergeable.GetComponent<ProjectileSpawning>().Temp_SpawnDelay == 2f)
                     {
-                        mergeable.GetComponent<ProjectileSpawning>().Temp_SpawnDelay = 0.2f;
+                        mergeable.GetComponent<ProjectileSpawning>().Temp_SpawnDelay = ChangedSpawnDelay;
                     }
                 }
 
@@ -122,12 +126,21 @@ public class Boosts : MonoBehaviour
             {
                 Touch touch = Input.GetTouch(0);
 
-                if (touch.phase == TouchPhase.Began && TouchCount < MaxTouch)
+                // Cast a ray from the camera to the touch position
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                // Check if the ray hits an object with a collider
+                if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    TouchCount++;
+                    if (hit.collider.gameObject.tag != "Untouchable")
+                    {
+                        if (touch.phase == TouchPhase.Began && TouchCount < MaxTouch)
+                        {
+                            TouchCount++;
 
-                    Damage5x_txt.GetComponent<TextMeshProUGUI>().text = "Clicks: " + TouchCount + "/" + MaxTouch;      
-                }
+                            Damage5x_txt.GetComponent<TextMeshProUGUI>().text = "Clicks: " + TouchCount + "/" + MaxTouch;
+                        }
+                    }
+                }   
             }
 
             // If Required touches on the screen is done and button is also clicked then Multiply damage by 5x

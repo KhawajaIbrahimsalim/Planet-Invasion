@@ -1,4 +1,5 @@
 using System.IO;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +23,8 @@ public class SaveData
     public bool IsAutoClickActive = false;
     public bool Damage5xIsActive = false;
     public bool IsDelayChanged = true;
-
+    public float Coins;
+    public float Cost;
     public float Health;
 }
 
@@ -34,7 +36,9 @@ public class SaveLoad : MonoBehaviour
     public GameObject[] Mergable;
     public GameObject Planet;
     public GameObject HealthBar;
-    public GameObject AutoClick_txt;
+    public GameObject Damage5x_txt;
+    [SerializeField] private TextMeshProUGUI Coins_txt;
+    [SerializeField] private TextMeshProUGUI Cost_txt;
 
     private string savePath;
     GameObject mergable;
@@ -47,7 +51,7 @@ public class SaveLoad : MonoBehaviour
     void Start()
     {
         savePath = Application.persistentDataPath + "/Max93.json";
-        //File.Delete(savePath);
+        File.Delete(savePath);
 
         // Load:
 
@@ -150,12 +154,24 @@ public class SaveLoad : MonoBehaviour
             {
                 GetComponent<Boosts>().TouchCount = data.TouchCount;
 
-                AutoClick_txt.GetComponent<TextMeshProUGUI>().text = "Clicks: " + data.TouchCount + "/" + GetComponent<Boosts>().MaxTouch;
+                Damage5x_txt.GetComponent<TextMeshProUGUI>().text = "Clicks: " + data.TouchCount + "/" + GetComponent<Boosts>().MaxTouch;
 
                 GetComponent<Boosts>().DelayDamage5x = data.DelayDamage5x;
 
                 GetComponent<GameController>().Damage5xIsActive = data.Damage5xIsActive;
             }
+
+            // Load Coins
+            GetComponent<GameController>().Coins = data.Coins;
+
+            // Show Coins
+            Coins_txt.text = GetComponent<GameController>().CompressNumber(data.Coins);
+
+            // Load Cost
+            GetComponent<GameController>().Cost = data.Cost;
+
+            // Show Cost
+            Cost_txt.text = GetComponent<GameController>().CompressNumber(data.Cost);
         }
     }
 
@@ -253,6 +269,15 @@ public class SaveLoad : MonoBehaviour
             data.DelayDamage5x = GetComponent<Boosts>().DelayDamage5x;
 
             data.Damage5xIsActive = GetComponent<GameController>().Damage5xIsActive;
+        }
+
+        // Save Coins and Cost
+        {
+            // Save Coins
+            data.Coins = GetComponent<GameController>().Coins;
+
+            // Save Cost
+            data.Cost = GetComponent<GameController>().Cost;
         }
 
         // save data to Json
