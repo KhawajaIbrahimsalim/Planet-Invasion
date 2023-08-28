@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
     public GameObject FooterPanel;
 
     [Header("Coins Properties:")]
-    public float Coins = 100;
+    public float Coins;
     public TextMeshProUGUI Coins_txt;
     [SerializeField] private float BonusCoins;
     [SerializeField] private GameObject FiveX_Coins_txt;
@@ -198,5 +198,10 @@ public class GameController : MonoBehaviour
 
             IsUpgradePanelOpened = false;
         }
+    }
+
+    public void CloseUpgradePanel()
+    {
+        UpgradePanel.SetActive(false);
     }
 }

@@ -1,5 +1,4 @@
 using System.IO;
-using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +25,12 @@ public class SaveData
     public float Coins;
     public float Cost;
     public float Health;
+    public float Offline_currencyPerSecond;
+    public int Offline_Level;
+    public float Offline_UpgradeCost;
+    public float Power_DamageRatio;
+    public int Power_Level;
+    public float Power_UpgradeCost;
 }
 
 [System.Serializable]
@@ -161,17 +166,62 @@ public class SaveLoad : MonoBehaviour
                 GetComponent<GameController>().Damage5xIsActive = data.Damage5xIsActive;
             }
 
-            // Load Coins
-            GetComponent<GameController>().Coins = data.Coins;
+            // Load Buy Button Properties
+            {
+                // Load Coins
+                GetComponent<GameController>().Coins = data.Coins;
 
-            // Show Coins
-            Coins_txt.text = GetComponent<GameController>().CompressNumber(data.Coins);
+                // Show Coins
+                Coins_txt.text = GetComponent<GameController>().CompressNumber(data.Coins);
 
-            // Load Cost
-            GetComponent<GameController>().Cost = data.Cost;
+                // Load Cost
+                GetComponent<GameController>().Cost = data.Cost;
 
-            // Show Cost
-            Cost_txt.text = GetComponent<GameController>().CompressNumber(data.Cost);
+                // Show Cost
+                Cost_txt.text = GetComponent<GameController>().CompressNumber(data.Cost);
+            }
+
+            // Load Power Button Properties
+            {
+                // Load DamageRatio
+                GetComponent<PowerUpgrade>().DamageRatio = data.Power_DamageRatio;
+
+                // Show DamageRatio
+                GetComponent<PowerUpgrade>().PowerAmount_txt.text = data.Power_DamageRatio.ToString(".00");
+
+                // Load Level
+                GetComponent<PowerUpgrade>().Level = data.Power_Level;
+
+                // Show Level Increase
+                GetComponent<PowerUpgrade>().Level_txt.text = "Lv." + data.Power_Level;
+
+                // Load UpgradeCost
+                GetComponent<PowerUpgrade>().UpgradeCost = data.Power_UpgradeCost;
+
+                // Show Upgrade Cost
+                GetComponent<PowerUpgrade>().UpgradeCost_txt.text = GetComponent<GameController>().CompressNumber(data.Power_UpgradeCost);
+            }
+
+            // Load Offline Button Properties
+            {
+                // Load currencyPerSecond
+                GetComponent<OfflineCurrency>().currencyPerSecond = data.Offline_currencyPerSecond;
+
+                // Show Earning_txt
+                GetComponent<OfflineCurrency>().Earning_txt.text = "Earning × " + data.Offline_currencyPerSecond;
+
+                // Load Level
+                GetComponent<OfflineCurrency>().Level = data.Offline_Level;
+
+                // Show Level Increase
+                GetComponent<OfflineCurrency>().Level_txt.text = "Lv." + data.Offline_Level;
+
+                // Load UpgradeCost
+                GetComponent<OfflineCurrency>().UpgradeCost = data.Offline_UpgradeCost;
+
+                // Show Upgrade Cost
+                GetComponent<OfflineCurrency>().UpgradeCost_txt.text = GetComponent<GameController>().CompressNumber(data.Offline_UpgradeCost);
+            }
         }
     }
 
@@ -278,6 +328,30 @@ public class SaveLoad : MonoBehaviour
 
             // Save Cost
             data.Cost = GetComponent<GameController>().Cost;
+        }
+
+        // Save Power Button Properties
+        {
+            // Save DamageRatio
+            data.Power_DamageRatio = GetComponent<PowerUpgrade>().DamageRatio;
+
+            // Save Level
+            data.Power_Level = GetComponent<PowerUpgrade>().Level;
+
+            // Save UpgradeCost
+            data.Power_UpgradeCost = GetComponent<PowerUpgrade>().UpgradeCost;
+        }
+
+        // Save Offline Button Properties
+        {
+            // Save currencyPerSecond
+            data.Offline_currencyPerSecond = GetComponent<OfflineCurrency>().currencyPerSecond;
+
+            // Save Level
+            data.Offline_Level = GetComponent<OfflineCurrency>().Level;
+
+            // Save UpgradeCost
+            data.Offline_UpgradeCost = GetComponent<OfflineCurrency>().UpgradeCost;
         }
 
         // save data to Json

@@ -24,7 +24,7 @@ public class Boosts : MonoBehaviour
     [HideInInspector] public bool IsDelayChanged = true;
 
     private GameObject GameController;
-    private GameObject[] MergeableObjects;
+    [HideInInspector] public GameObject[] MergeableObjects;
 
     // Start is called before the first frame update
     void Start()
@@ -60,9 +60,10 @@ public class Boosts : MonoBehaviour
             {
                 foreach (var mergeable in MergeableObjects)
                 {
-                    if (mergeable.GetComponent<ProjectileSpawning>().Temp_SpawnDelay == 2f)
+                    if (mergeable.GetComponent<ProjectileSpawning>().Temp_SpawnDelay == GetComponent<SpeedUpgrade>().SpeedRatio)
                     {
                         mergeable.GetComponent<ProjectileSpawning>().Temp_SpawnDelay = ChangedSpawnDelay;
+                        mergeable.GetComponent<ProjectileSpawning>().SpawnDelay = 0; // To Instantly play start Shooting
                     }
                 }
 
@@ -104,7 +105,7 @@ public class Boosts : MonoBehaviour
 
                 foreach (var mergeable in MergeableObjects)
                 {
-                    mergeable.GetComponent<ProjectileSpawning>().Temp_SpawnDelay = 2f;
+                    mergeable.GetComponent<ProjectileSpawning>().Temp_SpawnDelay = GetComponent<SpeedUpgrade>().SpeedRatio;
                 }
 
                 GameController.GetComponent<GameController>().IsAutoClickActive = false;
@@ -176,7 +177,7 @@ public class Boosts : MonoBehaviour
                     {
                         mergeable.GetComponent<ProjectileSpawning>().IsDamageIncreased = false;
 
-                        mergeable.GetComponent<ProjectileSpawning>().Damage = float.Parse(mergeable.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text);
+                        mergeable.GetComponent<ProjectileSpawning>().Damage = GetComponent<PowerUpgrade>().DamageRatio;
                     }
                 }
 

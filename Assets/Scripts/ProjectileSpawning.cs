@@ -6,6 +6,7 @@ public class ProjectileSpawning : MonoBehaviour
 {
     [Header("Spawn Properties:")]
     public float SpawnDelay;
+    public float Temp_SpawnDelay;
     [SerializeField] private GameObject Projectile;
     [SerializeField] private GameObject ProjectileSpawnPoint;
 
@@ -17,8 +18,8 @@ public class ProjectileSpawning : MonoBehaviour
     [SerializeField] private Animator AttackAnimation;
     [SerializeField] private float AnimDelay;
 
-    [HideInInspector] public float Temp_SpawnDelay;
     [HideInInspector] public bool IsDamageIncreased = false;
+    public bool IsDamageUpgraded = false;
 
     private float Temp_AnimDelay;
     private bool IsTouched;
@@ -29,9 +30,9 @@ public class ProjectileSpawning : MonoBehaviour
     {
         GameController = GameObject.Find("GameController");
 
-        Temp_SpawnDelay = SpawnDelay;
-
         Temp_AnimDelay = AnimDelay;
+
+        IsDamageUpgraded = false;
 
         Damage = float.Parse(TimesPower_txt.text);
     }
@@ -48,11 +49,6 @@ public class ProjectileSpawning : MonoBehaviour
             {
                 IsTouched = true;
             }
-
-            //if (touch.phase == TouchPhase.Moved && GameController.GetComponent<GameController>().IsAutoClickActive == false)
-            //{
-            //    AttackAnimation.SetBool("AutoClick", false);
-            //}
 
             if (touch.phase == TouchPhase.Ended)
             {
