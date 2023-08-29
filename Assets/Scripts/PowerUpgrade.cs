@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 
+[System.Serializable]
 public class PowerUpgrade : MonoBehaviour
 {
     [Header("Power Upgrade Properties:")]
@@ -29,11 +30,19 @@ public class PowerUpgrade : MonoBehaviour
         {
             if (mergeable.GetComponent<ProjectileSpawning>().IsDamageUpgraded == false)
             {
+                // Set The Default value
+                mergeable.GetComponent<ProjectileSpawning>().Damage = float.Parse(mergeable.GetComponent<ProjectileSpawning>().TimesPower_txt.text);
+
+                // Then Multiply the DamageRatio
                 damage = mergeable.GetComponent<ProjectileSpawning>().Damage * DamageRatio;
 
+                // Then store it in the Damage
                 mergeable.GetComponent<ProjectileSpawning>().Damage = damage;
 
+                // Make the IsDamageUpgraded false so the it won't repeat it self every frame
                 mergeable.GetComponent<ProjectileSpawning>().IsDamageUpgraded = true;
+
+                // Note: It can only repeat when the Button is pressed to Increase the Damage more.
             }
         }
     }
@@ -66,15 +75,10 @@ public class PowerUpgrade : MonoBehaviour
             // Show DamageRatio
             PowerAmount_txt.text = DamageRatio.ToString(".00");
 
-            if (GetComponent<Boosts>().TouchCount != GetComponent<Boosts>().MaxTouch)
+            // Set Damage for mergeable object that are in the scene
+            foreach (var mergeable in GetComponent<Boosts>().MergeableObjects)
             {
-                // Set Damage for mergeable object that are in the scene
-                foreach (var mergeable in GetComponent<Boosts>().MergeableObjects)
-                {
-                    damage = mergeable.GetComponent<ProjectileSpawning>().Damage * DamageRatio;
-
-                    mergeable.GetComponent<ProjectileSpawning>().Damage = damage;
-                }
+                mergeable.GetComponent<ProjectileSpawning>().IsDamageUpgraded = false;
             }
         }
     }

@@ -9,6 +9,8 @@ public class SaveData
     public GameObject[] Tiles;
     public Color[] MergableColors;
     public string[] TimesPower_txt;
+    public float[] Damage;
+    public bool[] IsDamageUpgraded;
     public string CurrentPlanet_name;
     public float TileLength;
     public int count;
@@ -31,6 +33,9 @@ public class SaveData
     public float Power_DamageRatio;
     public int Power_Level;
     public float Power_UpgradeCost;
+    public float Speed_SpeedRatio;
+    public int Speed_Level;
+    public float Speed_UpgradeCost;
 }
 
 [System.Serializable]
@@ -56,7 +61,7 @@ public class SaveLoad : MonoBehaviour
     void Start()
     {
         savePath = Application.persistentDataPath + "/Max93.json";
-        File.Delete(savePath);
+        //File.Delete(savePath);
 
         // Load:
 
@@ -121,8 +126,11 @@ public class SaveLoad : MonoBehaviour
                 {
                     if (data.Tiles[i] != null)
                     {
-                        // Spawn mergable
+                        // Spawn mergeable
                         mergable = Instantiate(MergablePrefab);
+
+                        // Set Damage
+                        mergable.GetComponent<ProjectileSpawning>().Damage = data.Damage[i];
 
                         // Set Color
                         mergable.transform.GetChild(1).transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material.color = data.MergableColors[i];
@@ -202,6 +210,27 @@ public class SaveLoad : MonoBehaviour
                 GetComponent<PowerUpgrade>().UpgradeCost_txt.text = GetComponent<GameController>().CompressNumber(data.Power_UpgradeCost);
             }
 
+            // Load Speed Button Properties
+            {
+                // Load SpeedRatio
+                GetComponent<SpeedUpgrade>().SpeedRatio = data.Speed_SpeedRatio;
+
+                // Show SpeedRatio
+                GetComponent<SpeedUpgrade>().SpeedAmount_txt.text = data.Speed_SpeedRatio.ToString(".00");
+
+                // Load Level
+                GetComponent<SpeedUpgrade>().Level = data.Speed_Level;
+
+                // Show Level
+                GetComponent<SpeedUpgrade>().Level_txt.text = "Lv." + GetComponent<GameController>().CompressNumber(data.Speed_Level);
+
+                // Lead UpgradeCost
+                GetComponent<SpeedUpgrade>().UpgradeCost = data.Speed_UpgradeCost;
+
+                // Show UpgradeCost
+                GetComponent<SpeedUpgrade>().UpgradeCost_txt.text = GetComponent<GameController>().CompressNumber(data.Speed_UpgradeCost);
+            }
+
             // Load Offline Button Properties
             {
                 // Load currencyPerSecond
@@ -237,6 +266,8 @@ public class SaveLoad : MonoBehaviour
         data.Tiles = new GameObject[Tiles.Length];
         data.MergableColors = new Color[Tiles.Length];
         data.TimesPower_txt = new string[Tiles.Length];
+        data.Damage = new float[Tiles.Length];
+        data.IsDamageUpgraded = new bool[Tiles.Length];
 
         // IsEmpty is equal to false if tile has a child, means it is fill (not empty)
         foreach (var item in Tiles)
@@ -266,6 +297,12 @@ public class SaveLoad : MonoBehaviour
 
                         // Save TimesPower_txt of the Mergeable Object
                         data.TimesPower_txt[i] = Mergable[j].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+
+                        // Save Damage
+                        data.Damage[i] = Mergable[j].GetComponent<ProjectileSpawning>().Damage;
+
+                        // Save IsDamageUpgraded
+                        data.IsDamageUpgraded[i] = Mergable[j].GetComponent<ProjectileSpawning>().IsDamageUpgraded;
                     }
                 }
             }
@@ -274,6 +311,8 @@ public class SaveLoad : MonoBehaviour
             {
                 // If condition is not fullfilled then null the index
                 data.Tiles[i] = null;
+
+                data.IsDamageUpgraded[i] = false;
             }
         }
 
@@ -340,6 +379,18 @@ public class SaveLoad : MonoBehaviour
 
             // Save UpgradeCost
             data.Power_UpgradeCost = GetComponent<PowerUpgrade>().UpgradeCost;
+        }
+
+        // Save Speed Button Properties
+        {
+            // Save SpeedRatio
+            data.Speed_SpeedRatio = GetComponent<SpeedUpgrade>().SpeedRatio;
+
+            // Save Level
+            data.Speed_Level = GetComponent<SpeedUpgrade>().Level;
+
+            // Save UpgradeCost
+            data.Speed_UpgradeCost = GetComponent<SpeedUpgrade>().UpgradeCost;
         }
 
         // Save Offline Button Properties

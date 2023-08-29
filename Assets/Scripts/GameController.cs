@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     public GameObject PauseGame_Panel;
     public GameObject UpgradePanel;
     public GameObject FooterPanel;
+    public GameObject StorePanel;
 
     [Header("Coins Properties:")]
     public float Coins;
@@ -203,5 +204,15 @@ public class GameController : MonoBehaviour
     public void CloseUpgradePanel()
     {
         UpgradePanel.SetActive(false);
+    }
+
+    public void OpenStore()
+    {
+        StorePanel.SetActive(true);
+    }
+
+    public void CloseStorePanel()
+    {
+        StorePanel.SetActive(false);
     }
 }

@@ -32,9 +32,18 @@ public class ProjectileSpawning : MonoBehaviour
 
         Temp_AnimDelay = AnimDelay;
 
-        IsDamageUpgraded = false;
+        // Default Damage / Starting Damage
+        if (Damage <= float.Parse(TimesPower_txt.text))
+        {
+            IsDamageUpgraded = false;
 
-        Damage = float.Parse(TimesPower_txt.text);
+            Damage = float.Parse(TimesPower_txt.text);
+        }
+
+        else // After Damage is Upgraded and also it means the Damage value is been set in SavaLoad Script
+        {
+            IsDamageUpgraded = true;
+        }
     }
 
     // Update is called once per frame
