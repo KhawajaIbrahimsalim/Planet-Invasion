@@ -21,16 +21,13 @@ public class PlanetCollisionEventSystem : MonoBehaviour
 
     [HideInInspector] public bool IfHealthIsHalf = false;
 
-    private GameObject MeteorSpawnPoint_1;
-    private GameObject MeteorSpawnPoint_2;
     private GameObject HealthBar;
-    private bool IsDestroyed = false;
     private bool IsHit = false;
+    private bool IsHalfHealth = true;
+    private bool IsDestroyed = true;
     private GameObject Hit_particleSystem;
     private GameObject explostionParticles;
     private GameObject Fire_particleSystem;
-    private GameObject Fire_particleSystem_2;
-    private GameObject Fire_particleSystem_2_2;
     private GameObject GameController;
     private GameObject[] Projectile;
 
@@ -42,10 +39,9 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        HealthBar = GameObject.Find("HealthBar");
+        GameController = GameObject.Find("GameController");
 
-        MeteorSpawnPoint_1 = GameObject.Find("MeteorspawnPoint 1");
-        MeteorSpawnPoint_2 = GameObject.Find("MeteorspawnPoint 2");
+        HealthBar = GameObject.Find("HealthBar");
 
         if (Health == 0)
         {
@@ -54,39 +50,14 @@ public class PlanetCollisionEventSystem : MonoBehaviour
 
         Hit_particleSystem = null;
         explostionParticles = null;
-        Fire_particleSystem = null;
-        Fire_particleSystem_2 = null;
-
-        GameController = GameObject.Find("GameController");
 
         HealthBar.GetComponent<Slider>().value = Health / MaxHealth;
     }
 
     // Update is called once per frame
-    [System.Obsolete]
     void Update()
     {
         Projectile = GameObject.FindGameObjectsWithTag("Projectile");
-
-        // Destroy the Planet and Instantiate the BOOM! Particle effects
-        if (IsDestroyed)
-        {
-            MeteorSpawnPoint_1.transform.parent = GameController.transform;
-            MeteorSpawnPoint_2.transform.parent = GameController.transform;
-
-            foreach (GameObject item in Projectile)
-            {
-                Destroy(item);
-            }
-
-            Destroy(Fire_particleSystem_2_2);
-            Destroy(Fire_particleSystem_2);
-            Destroy(Fire_particleSystem);
-
-            explostionParticles = Instantiate(Explosion_Particles, gameObject.transform.position, Quaternion.identity);
-
-            Destroy(gameObject);
-        }
 
         // Destroy the BOOM! Particle effect
         if (explostionParticles != null)
@@ -108,56 +79,10 @@ public class PlanetCollisionEventSystem : MonoBehaviour
             Destroy(Hit_particleSystem, 0.8f);
         }
 
-        // Instantiate Particles for Half Health
-        if (IfHealthIsHalf)
+        else
         {
-            if (Fire_particleSystem == null)
-            {
-                Fire_particleSystem = Instantiate(Fire_Particles, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z), Quaternion.identity);
-            }
-
-            if (Fire_particleSystem_2 == null && Fire_particleSystem_2_2 == null)
-            {
-                // Fire_particleSystem_2
-                {
-                    // Description: Set the Fire_particleSystem_2 as the child of the Spawnpoint and Set the SpawnPoint as the child of the planet
-
-                    // Spawn Fire_particleSystem_2
-                    Fire_particleSystem_2 = Instantiate(Fire_Particles_2, MeteorSpawnPoint_1.transform.position, Quaternion.identity);
-
-                    // Set Parent for MeteorSpawnPoint_1
-                    MeteorSpawnPoint_1.transform.parent = gameObject.transform;
-
-                    // Set Rotation for MeteorSpawnPoint_1
-                    //MeteorSpawnPoint_1.transform.localRotation = new Quaternion(0, 0, 0, 0);
-
-                    // Set Parent for Fire_particleSystem_2
-                    Fire_particleSystem_2.transform.parent = MeteorSpawnPoint_1.transform;
-
-                    // Set Position and rotation
-                    Fire_particleSystem_2.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-                }
-
-                // Fire_particleSystem_2_2
-                {
-                    // Description: Set the Fire_particleSystem_2_2 as the child of the Spawnpoint and Set the SpawnPoint as the child of the planet
-
-                    // Spawn Fire_particleSystem_2_2
-                    Fire_particleSystem_2_2 = Instantiate(Fire_Particles_2, MeteorSpawnPoint_2.transform.position, Quaternion.identity);
-
-                    // Set Parent for MeteorSpawnPoint_2
-                    MeteorSpawnPoint_2.transform.parent = gameObject.transform;
-
-                    // Set Rotation for MeteorSpawnPoint_2
-                    //MeteorSpawnPoint_2.transform.localRotation = new Quaternion(0, 90, 0, 0);
-
-                    // Set Parent for Fire_particleSystem_2_2
-                    Fire_particleSystem_2_2.transform.parent = MeteorSpawnPoint_2.transform;
-
-                    // Set Position and rotation for Fire_particleSystem_2_2
-                    Fire_particleSystem_2_2.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-                }
-            }
+            // Disable Damage_txt
+            GameController.GetComponent<GameController>().Damage_Indicator_txt.SetActive(false);
         }
     }
 
@@ -166,6 +91,12 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     {
         if (other.CompareTag("Projectile"))
         {
+            // Enable Damage_Indicator_txt
+            GameController.GetComponent<GameController>().Damage_Indicator_txt.SetActive(true);
+
+            // Show Damage_Indicator_txt
+            GameController.GetComponent<GameController>().Damage_Indicator_txt.GetComponent<TextMeshProUGUI>().text = "-" + GameController.GetComponent<GameController>().CompressNumber(other.gameObject.GetComponent<ProjectileMovement>().Damage);
+
             // Add Coins
             float Coins = (GameController.GetComponent<GameController>().Coins += other.gameObject.GetComponent<ProjectileMovement>().Damage);
 
@@ -181,18 +112,13 @@ public class PlanetCollisionEventSystem : MonoBehaviour
             // If Health is half
             if (Health <= MaxHealth / 4)
             {
-                IfHealthIsHalf = true;
-            }
-
-            else
-            {
-                IfHealthIsHalf = false;
+                HalfHealth();
             }
 
             // If Health is 0 (Destroy the Planet)
             if (Health <= 0)
             {
-                IsDestroyed = true;
+                DestroyPlanet();
             }
             // If Health is not Zero but got hit
             else
@@ -202,6 +128,55 @@ public class PlanetCollisionEventSystem : MonoBehaviour
 
             // Destroy the projectile
             Destroy(other.gameObject);
+        }
+    }
+
+    private void HalfHealth()
+    {
+        if (IsHalfHealth)
+        {
+            GameController.GetComponent<GameController>().MeteorSpawnPoint_1.SetActive(true);
+            GameController.GetComponent<GameController>().MeteorSpawnPoint_2.SetActive(true);
+
+            GameController.GetComponent<GameController>().MeteorSpawnPoint_1.transform.parent = gameObject.transform;
+            GameController.GetComponent<GameController>().MeteorSpawnPoint_2.transform.parent = gameObject.transform;
+
+            if (Fire_particleSystem == null)
+            {
+                Fire_particleSystem = Instantiate(Fire_Particles, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z), Quaternion.identity);
+            }
+
+            IsHalfHealth = false;
+        }
+    }
+
+    private void DestroyPlanet()
+    {
+        if (IsDestroyed)
+        {
+            // Destry Every Projectile
+            foreach (GameObject item in Projectile)
+            {
+                Destroy(item);
+            }
+
+            GameController.GetComponent<GameController>().MeteorSpawnPoint_1.transform.parent = GameController.transform;
+            GameController.GetComponent<GameController>().MeteorSpawnPoint_2.transform.parent = GameController.transform;
+
+            // Disable Half Health Particle Parent Objects
+            GameController.GetComponent<GameController>().MeteorSpawnPoint_1.SetActive(false);
+            GameController.GetComponent<GameController>().MeteorSpawnPoint_2.SetActive(false);
+
+            // Destroy BackFire Particle, Activated when Half Health
+            Destroy(Fire_particleSystem);
+
+            // And then Spawn the explosion
+            explostionParticles = Instantiate(Explosion_Particles, gameObject.transform.position, Quaternion.identity);
+
+            IsDestroyed = false;
+
+            // Destroy this GameObject (Planet)
+            Destroy(gameObject);
         }
     }
 }

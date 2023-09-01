@@ -263,6 +263,8 @@ MonoBehaviour:
   Temp_SpawnDelay: 2
   Projectile: {fileID: 5693456931348392997, guid: 766e92e9266b20a478d21d0791345f7c, type: 3}
   ProjectileSpawnPoint: {fileID: 5055697366208066142}
+  HoldTime: 0.5
+  TouchSpawnDelay: 0.05
   Damage: 2
   TimesPower_txt: {fileID: 7154791754548030222}
   AttackAnimation: {fileID: 1497904924915496884}

@@ -10,7 +10,6 @@ public class SaveData
     public Color[] MergableColors;
     public string[] TimesPower_txt;
     public float[] Damage;
-    public bool[] IsDamageUpgraded;
     public string CurrentPlanet_name;
     public float TileLength;
     public int count;
@@ -61,7 +60,7 @@ public class SaveLoad : MonoBehaviour
     void Start()
     {
         savePath = Application.persistentDataPath + "/Max93.json";
-        //File.Delete(savePath);
+        File.Delete(savePath);
 
         // Load:
 
@@ -84,13 +83,6 @@ public class SaveLoad : MonoBehaviour
 
             // For Planet Load
             {
-                // Just for safety
-                if (data.Health <= 0)
-                {
-                    Planet = GameObject.FindGameObjectWithTag("Planet");
-                    Destroy(Planet);
-                }
-
                 // Spawn the last saved Planet
                 foreach (GameObject Planet in GetComponent<GameController>().Planets)
                 {
@@ -100,23 +92,17 @@ public class SaveLoad : MonoBehaviour
 
                         GetComponent<GameController>().CurrentPlanet = planet;
 
-                        // Activate the Particle system If it waas Active
+                        // Load Health
+                        planet.GetComponent<PlanetCollisionEventSystem>().Health = data.Health;
+
+                        // Show Health
+                        HealthBar.GetComponent<Slider>().value = planet.GetComponent<PlanetCollisionEventSystem>().Health / planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth;
+
+                        // Activate the Particle system If it was Active
                         planet.GetComponent<PlanetCollisionEventSystem>().IfHealthIsHalf = data.IfHealthIsHalf;
 
                         Debug.Log(data.IfHealthIsHalf);
                     }
-                }
-
-                // Find the new spawned Planet
-                Planet = GameObject.FindGameObjectWithTag("Planet");
-
-                if (Planet)
-                {
-                    // Load Health
-                    Planet.GetComponent<PlanetCollisionEventSystem>().Health = data.Health;
-
-                    // Show Health
-                    HealthBar.GetComponent<Slider>().value = Planet.GetComponent<PlanetCollisionEventSystem>().Health / Planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth;
                 }
             }
 
@@ -267,7 +253,6 @@ public class SaveLoad : MonoBehaviour
         data.MergableColors = new Color[Tiles.Length];
         data.TimesPower_txt = new string[Tiles.Length];
         data.Damage = new float[Tiles.Length];
-        data.IsDamageUpgraded = new bool[Tiles.Length];
 
         // IsEmpty is equal to false if tile has a child, means it is fill (not empty)
         foreach (var item in Tiles)
@@ -300,9 +285,6 @@ public class SaveLoad : MonoBehaviour
 
                         // Save Damage
                         data.Damage[i] = Mergable[j].GetComponent<ProjectileSpawning>().Damage;
-
-                        // Save IsDamageUpgraded
-                        data.IsDamageUpgraded[i] = Mergable[j].GetComponent<ProjectileSpawning>().IsDamageUpgraded;
                     }
                 }
             }
@@ -311,8 +293,6 @@ public class SaveLoad : MonoBehaviour
             {
                 // If condition is not fullfilled then null the index
                 data.Tiles[i] = null;
-
-                data.IsDamageUpgraded[i] = false;
             }
         }
 

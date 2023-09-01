@@ -30,5 +30,10 @@ public class ProjectileMovement : MonoBehaviour
 
             transform.position += Speed * Time.deltaTime * Direction;
         }
+
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -177,7 +177,7 @@ public class Boosts : MonoBehaviour
                     {
                         mergeable.GetComponent<ProjectileSpawning>().IsDamageIncreased = false;
 
-                        mergeable.GetComponent<ProjectileSpawning>().Damage = GetComponent<PowerUpgrade>().DamageRatio;
+                        mergeable.GetComponent<ProjectileSpawning>().Damage = float.Parse(mergeable.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text) * GetComponent<PowerUpgrade>().DamageRatio;
                     }
                 }
 

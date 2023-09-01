@@ -129,11 +129,14 @@ MonoBehaviour:
   Temp_SpawnDelay: 2
   Projectile: {fileID: 5693456931348392997, guid: 766e92e9266b20a478d21d0791345f7c, type: 3}
   ProjectileSpawnPoint: {fileID: 3893340965975913422}
+  HoldTime: 0.5
+  TouchSpawnDelay: 0.05
   Damage: 2
   TimesPower_txt: {fileID: 1397365194328861342}
   AttackAnimation: {fileID: 7270847860317926948}
   AnimDelay: 0.2
   IsDamageIncreased: 0
+  IsDamageUpgraded: 0
 --- !u!54 &7730901997530174529
 Rigidbody:
   m_ObjectHideFlags: 0

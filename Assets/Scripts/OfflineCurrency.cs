@@ -53,7 +53,7 @@ public class OfflineCurrency : MonoBehaviour
                 // Use offlineTime to calculate the offline time in seconds, minutes, hours, etc.
                 Debug.Log("Player was offline for " + offlineTime.TotalSeconds + " seconds");
 
-                Debug.Log("Total Coins Multiply by (" + currencyPerSecond + "): " + GetComponent<GameController>().Coins);
+                Debug.Log("Offline Time Multiply by (" + currencyPerSecond + "): " + GetComponent<GameController>().CompressNumber(GetComponent<GameController>().Coins));
             }
         }
     }

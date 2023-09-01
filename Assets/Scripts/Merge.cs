@@ -141,7 +141,7 @@ public class Merge : MonoBehaviour
         Transform ThisChild = gameObject.transform.GetChild(0);
         Transform NewChild = newObj.transform.GetChild(0);
 
-        NewChild.GetComponent<TextMeshProUGUI>().text = (float.Parse(ThisChild.GetComponent<TextMeshProUGUI>().text) * 2).ToString("0");
+        NewChild.GetComponent<TextMeshProUGUI>().text = GameController.GetComponent<GameController>().CompressNumber(float.Parse(ThisChild.GetComponent<TextMeshProUGUI>().text) * 2);
     }
 
     private void SetMaterial(GameObject newObj)

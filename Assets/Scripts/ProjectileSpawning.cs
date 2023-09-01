@@ -9,6 +9,8 @@ public class ProjectileSpawning : MonoBehaviour
     public float Temp_SpawnDelay;
     [SerializeField] private GameObject Projectile;
     [SerializeField] private GameObject ProjectileSpawnPoint;
+    [SerializeField] private float HoldTime;
+    [SerializeField] private float TouchSpawnDelay;
 
     [Header("Damage Properties:")]
     public float Damage;
@@ -22,15 +24,21 @@ public class ProjectileSpawning : MonoBehaviour
     public bool IsDamageUpgraded = false;
 
     private float Temp_AnimDelay;
+    private float Temp_TouchSpawnDelay;
     private bool IsTouched;
     private GameObject GameController;
+    private float Timer = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
         GameController = GameObject.Find("GameController");
 
+        Temp_TouchSpawnDelay = TouchSpawnDelay;
+
         Temp_AnimDelay = AnimDelay;
+
+        Temp_SpawnDelay = GameController.GetComponent<SpeedUpgrade>().SpeedRatio;
 
         // Default Damage / Starting Damage
         if (Damage <= float.Parse(TimesPower_txt.text))
@@ -49,40 +57,79 @@ public class ProjectileSpawning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If Auto Click is on, Play the Auto Click Animation
+        if (GameController.GetComponent<GameController>().IsAutoClickActive == true)
+        {
+            AttackAnimation.SetBool("AutoClick", true);
+        }
+
         // Auto Click Animation
-        if (Input.touchCount > 0)
+        else if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
+            // Cast a ray from the camera to the touch position
+            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            // Check if the ray hits an object with a collider
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                IsTouched = true;
-            }
+                if (hit.collider.gameObject.tag != "Untouchable" && hit.collider.gameObject.tag != "Mergable")
+                {
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        // Reset the Timer
+                        Timer = 0f;
 
-            if (touch.phase == TouchPhase.Ended)
-            {
-                IsTouched = false;
-            }
+                        IsTouched = true;
+                    }
 
-            if (IsTouched)
-            {
-                AttackAnimation.SetBool("AutoClick", true);
+                    // If Player is holding Touch on the Screen then after a delay Turnoff the animation 
+                    if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                    {
+                        Timer += Time.deltaTime;
 
-                GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+                        if (Timer >= HoldTime)
+                        {
+                            AttackAnimation.SetBool("AutoClick", false);
 
-                projectile.GetComponent<ProjectileMovement>().Damage = Damage;
+                            IsTouched = false;
+                        }
+                    }
 
-                IsTouched = false;
+                    if (touch.phase == TouchPhase.Ended)
+                    {
+                        IsTouched = false;
+                    }
+
+                    if (IsTouched)
+                    {
+                        TouchSpawnDelay -= Time.deltaTime;
+
+                        if (TouchSpawnDelay <= 0f)
+                        {
+                            AttackAnimation.SetBool("AutoClick", true);
+
+                            GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+
+                            projectile.GetComponent<ProjectileMovement>().Damage = Damage;
+
+                            IsTouched = false;
+
+                            TouchSpawnDelay = Temp_TouchSpawnDelay;
+                        }  
+                    }
+                }
+
+                else
+                {
+                    AttackAnimation.SetBool("AutoClick", false);
+
+                    IsTouched = false;
+                }
             }
 
             // If Player touch or keep touching then the delay will be refilled
             AnimDelay = Temp_AnimDelay;
-        }
-
-        // If Auto Click is on, Play the Auto Click Animation
-        else if (GameController.GetComponent<GameController>().IsAutoClickActive == true)
-        {
-            AttackAnimation.SetBool("AutoClick", true);
         }
 
         else
@@ -104,13 +151,11 @@ public class ProjectileSpawning : MonoBehaviour
         }
 
         // Throw Animation
-        if (SpawnDelay <= 0)
-        {
-            // If Auto Click is off then stop this animation
-            if (AttackAnimation.GetBool("AutoClick") == false && GameController.GetComponent<GameController>().IsAutoClickActive == false)
-            {
-                AttackAnimation.SetBool("Throw", true);
-            }
+        // If Auto Click is off and also there is not touch then stop this animation and Spawn Projectile
+        if (SpawnDelay <= 0 && AnimDelay != Temp_AnimDelay && AttackAnimation.GetBool("AutoClick") == false
+            && GameController.GetComponent<GameController>().IsAutoClickActive == false)
+        {       
+            AttackAnimation.SetBool("Throw", true);
 
             GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
 
