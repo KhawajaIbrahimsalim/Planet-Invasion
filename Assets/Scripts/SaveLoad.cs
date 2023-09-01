@@ -261,6 +261,11 @@ public class SaveLoad : MonoBehaviour
             {
                 item.GetComponent<TileEmptyStatus>().IsEmpty = false;
             }
+
+            else
+            {
+                item.GetComponent<TileEmptyStatus>().IsEmpty = true;
+            }
         }
 
         // Save:

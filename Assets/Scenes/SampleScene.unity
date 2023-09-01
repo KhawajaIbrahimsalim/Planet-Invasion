@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: de5236e373d661d4ca9467d9a2d18e87, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1061,6 +1061,7 @@ GameObject:
   - component: {fileID: 102287445}
   - component: {fileID: 102287444}
   - component: {fileID: 102287443}
+  - component: {fileID: 102287446}
   m_Layer: 5
   m_Name: Tile (12)
   m_TagString: Tile
@@ -1138,6 +1139,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 102287441}
   m_CullTransparentMesh: 1
+--- !u!65 &102287446
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102287441}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &111986612
 GameObject:
   m_ObjectHideFlags: 0
@@ -1178,7 +1200,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 452.44}
+  m_AnchoredPosition: {x: 0, y: 452.43994}
   m_SizeDelta: {x: 687.7437, y: 604.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &111986614
@@ -2361,6 +2383,7 @@ GameObject:
   - component: {fileID: 244133828}
   - component: {fileID: 244133827}
   - component: {fileID: 244133826}
+  - component: {fileID: 244133829}
   m_Layer: 5
   m_Name: Tile (9)
   m_TagString: Tile
@@ -2438,6 +2461,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 244133824}
   m_CullTransparentMesh: 1
+--- !u!65 &244133829
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244133824}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &264328840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2526,6 +2570,7 @@ GameObject:
   - component: {fileID: 265171794}
   - component: {fileID: 265171793}
   - component: {fileID: 265171792}
+  - component: {fileID: 265171795}
   m_Layer: 5
   m_Name: Tile (5)
   m_TagString: Tile
@@ -2603,6 +2648,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265171790}
   m_CullTransparentMesh: 1
+--- !u!65 &265171795
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265171790}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &273959560
 GameObject:
   m_ObjectHideFlags: 0
@@ -2737,6 +2803,7 @@ GameObject:
   - component: {fileID: 284251670}
   - component: {fileID: 284251669}
   - component: {fileID: 284251668}
+  - component: {fileID: 284251671}
   m_Layer: 5
   m_Name: Tile (17)
   m_TagString: Tile
@@ -2814,6 +2881,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284251666}
   m_CullTransparentMesh: 1
+--- !u!65 &284251671
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284251666}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &330774178
 GameObject:
   m_ObjectHideFlags: 0
@@ -4108,7 +4196,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00036621094}
+  m_AnchoredPosition: {x: 0, y: -0.00048828125}
   m_SizeDelta: {x: -48.64, y: -96.257}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &559734602
@@ -7014,6 +7102,7 @@ GameObject:
   - component: {fileID: 885671552}
   - component: {fileID: 885671551}
   - component: {fileID: 885671550}
+  - component: {fileID: 885671553}
   m_Layer: 5
   m_Name: Tile (16)
   m_TagString: Tile
@@ -7091,6 +7180,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885671548}
   m_CullTransparentMesh: 1
+--- !u!65 &885671553
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885671548}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &903214220
 GameObject:
   m_ObjectHideFlags: 0
@@ -8071,7 +8181,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 75.16052}
+  m_AnchoredPosition: {x: 0, y: 75.1604}
   m_SizeDelta: {x: 800, y: 150.30005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1027316675
@@ -8124,6 +8234,7 @@ GameObject:
   - component: {fileID: 1027530734}
   - component: {fileID: 1027530733}
   - component: {fileID: 1027530732}
+  - component: {fileID: 1027530735}
   m_Layer: 5
   m_Name: Tile (1)
   m_TagString: Tile
@@ -8201,6 +8312,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027530730}
   m_CullTransparentMesh: 1
+--- !u!65 &1027530735
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027530730}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1036764174
 GameObject:
   m_ObjectHideFlags: 0
@@ -8631,13 +8763,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 135086dcda62e7143a3a8f2326dfe102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AutoClick_Delay: 100
-  MaxAutoClickDelay: 100
+  AutoClick_Delay: 10
+  MaxAutoClickDelay: 10
   AutoClick_txt: {fileID: 374082381}
   DelayAfterPressingTheButton: 50
   MaxDelayAfterPressingTheButton: 50
   DelayAfterPressingTheButton_txt: {fileID: 1152630137}
-  ChangedSpawnDelay: 0.05
+  ChangedSpawnDelay: 0.4
   TouchCount: 0
   MaxTouch: 200
   Damage5x_txt: {fileID: 1755876082}
@@ -8727,6 +8859,7 @@ GameObject:
   - component: {fileID: 1125433481}
   - component: {fileID: 1125433480}
   - component: {fileID: 1125433479}
+  - component: {fileID: 1125433482}
   m_Layer: 5
   m_Name: Tile (2)
   m_TagString: Tile
@@ -8804,6 +8937,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1125433477}
   m_CullTransparentMesh: 1
+--- !u!65 &1125433482
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125433477}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1152630137
 GameObject:
   m_ObjectHideFlags: 0
@@ -9172,6 +9326,7 @@ GameObject:
   - component: {fileID: 1206171351}
   - component: {fileID: 1206171350}
   - component: {fileID: 1206171349}
+  - component: {fileID: 1206171352}
   m_Layer: 5
   m_Name: Tile (15)
   m_TagString: Tile
@@ -9249,6 +9404,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206171347}
   m_CullTransparentMesh: 1
+--- !u!65 &1206171352
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206171347}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1216212441
 GameObject:
   m_ObjectHideFlags: 0
@@ -9471,6 +9647,7 @@ GameObject:
   - component: {fileID: 1257287205}
   - component: {fileID: 1257287204}
   - component: {fileID: 1257287203}
+  - component: {fileID: 1257287206}
   m_Layer: 5
   m_Name: Tile (20)
   m_TagString: Tile
@@ -9548,6 +9725,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257287201}
   m_CullTransparentMesh: 1
+--- !u!65 &1257287206
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257287201}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1265088314
 GameObject:
   m_ObjectHideFlags: 0
@@ -9945,6 +10143,7 @@ GameObject:
   - component: {fileID: 1318528004}
   - component: {fileID: 1318528003}
   - component: {fileID: 1318528002}
+  - component: {fileID: 1318528005}
   m_Layer: 5
   m_Name: Tile (8)
   m_TagString: Tile
@@ -10022,6 +10221,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318528000}
   m_CullTransparentMesh: 1
+--- !u!65 &1318528005
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318528000}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1330245537
 GameObject:
   m_ObjectHideFlags: 0
@@ -10324,6 +10544,7 @@ GameObject:
   - component: {fileID: 1384820061}
   - component: {fileID: 1384820060}
   - component: {fileID: 1384820059}
+  - component: {fileID: 1384820062}
   m_Layer: 5
   m_Name: Tile (10)
   m_TagString: Tile
@@ -10401,6 +10622,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1384820057}
   m_CullTransparentMesh: 1
+--- !u!65 &1384820062
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384820057}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1436662107
 GameObject:
   m_ObjectHideFlags: 0
@@ -11333,6 +11575,7 @@ GameObject:
   - component: {fileID: 1594622086}
   - component: {fileID: 1594622085}
   - component: {fileID: 1594622084}
+  - component: {fileID: 1594622087}
   m_Layer: 5
   m_Name: Tile (18)
   m_TagString: Tile
@@ -11410,6 +11653,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594622082}
   m_CullTransparentMesh: 1
+--- !u!65 &1594622087
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594622082}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1616875534
 GameObject:
   m_ObjectHideFlags: 0
@@ -11556,6 +11820,7 @@ GameObject:
   - component: {fileID: 1619495839}
   - component: {fileID: 1619495838}
   - component: {fileID: 1619495837}
+  - component: {fileID: 1619495840}
   m_Layer: 5
   m_Name: Tile (13)
   m_TagString: Tile
@@ -11633,6 +11898,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619495835}
   m_CullTransparentMesh: 1
+--- !u!65 &1619495840
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619495835}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1619895654
 GameObject:
   m_ObjectHideFlags: 0
@@ -12226,6 +12512,7 @@ GameObject:
   - component: {fileID: 1688773747}
   - component: {fileID: 1688773746}
   - component: {fileID: 1688773745}
+  - component: {fileID: 1688773748}
   m_Layer: 5
   m_Name: Tile (11)
   m_TagString: Tile
@@ -12303,6 +12590,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688773743}
   m_CullTransparentMesh: 1
+--- !u!65 &1688773748
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688773743}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1722227906
 GameObject:
   m_ObjectHideFlags: 0
@@ -13023,6 +13331,7 @@ GameObject:
   - component: {fileID: 1759179454}
   - component: {fileID: 1759179453}
   - component: {fileID: 1759179452}
+  - component: {fileID: 1759179455}
   m_Layer: 5
   m_Name: Tile (6)
   m_TagString: Tile
@@ -13100,6 +13409,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1759179450}
   m_CullTransparentMesh: 1
+--- !u!65 &1759179455
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759179450}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1792424401
 GameObject:
   m_ObjectHideFlags: 0
@@ -13380,6 +13710,7 @@ GameObject:
   - component: {fileID: 1866295909}
   - component: {fileID: 1866295908}
   - component: {fileID: 1866295907}
+  - component: {fileID: 1866295910}
   m_Layer: 5
   m_Name: Tile (7)
   m_TagString: Tile
@@ -13457,6 +13788,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1866295905}
   m_CullTransparentMesh: 1
+--- !u!65 &1866295910
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866295905}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1882460399
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14044,6 +14396,7 @@ GameObject:
   - component: {fileID: 2014224791}
   - component: {fileID: 2014224790}
   - component: {fileID: 2014224789}
+  - component: {fileID: 2014224792}
   m_Layer: 5
   m_Name: Tile (4)
   m_TagString: Tile
@@ -14121,6 +14474,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2014224787}
   m_CullTransparentMesh: 1
+--- !u!65 &2014224792
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014224787}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2027791563
 GameObject:
   m_ObjectHideFlags: 0
@@ -14400,6 +14774,7 @@ GameObject:
   - component: {fileID: 2048491958}
   - component: {fileID: 2048491957}
   - component: {fileID: 2048491956}
+  - component: {fileID: 2048491959}
   m_Layer: 5
   m_Name: Tile (14)
   m_TagString: Tile
@@ -14477,6 +14852,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2048491954}
   m_CullTransparentMesh: 1
+--- !u!65 &2048491959
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048491954}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2051125155
 GameObject:
   m_ObjectHideFlags: 0
@@ -14756,6 +15152,7 @@ GameObject:
   - component: {fileID: 2086970005}
   - component: {fileID: 2086970004}
   - component: {fileID: 2086970003}
+  - component: {fileID: 2086970006}
   m_Layer: 5
   m_Name: Tile (3)
   m_TagString: Tile
@@ -14833,6 +15230,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2086970001}
   m_CullTransparentMesh: 1
+--- !u!65 &2086970006
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086970001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2087249387
 GameObject:
   m_ObjectHideFlags: 0
@@ -14845,6 +15263,7 @@ GameObject:
   - component: {fileID: 2087249391}
   - component: {fileID: 2087249390}
   - component: {fileID: 2087249389}
+  - component: {fileID: 2087249392}
   m_Layer: 5
   m_Name: Tile (19)
   m_TagString: Tile
@@ -14922,6 +15341,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2087249387}
   m_CullTransparentMesh: 1
+--- !u!65 &2087249392
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087249387}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 145, y: 145, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2097087470
 GameObject:
   m_ObjectHideFlags: 0

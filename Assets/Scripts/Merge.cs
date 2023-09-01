@@ -52,6 +52,23 @@ public class Merge : MonoBehaviour
     //[System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Tile") && other.gameObject.GetComponent<TileEmptyStatus>().IsEmpty == true)
+        {
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Moved)
+                {
+                    gameObject.transform.SetParent(other.transform, false);
+
+                    gameObject.transform.localPosition = Vector3.zero;
+
+                    other.gameObject.GetComponent<TileEmptyStatus>().IsEmpty = false;
+                }
+            }
+        }
+
         if (other.CompareTag("Mergable"))
         {
             // First both gameobject and other should have same name and ColorIndex
@@ -160,3 +177,10 @@ public class Merge : MonoBehaviour
         GrandChild.gameObject.GetComponent<SkinnedMeshRenderer>().material = material;
     }
 }
+
+//Vector3 newPosition = new Vector3(
+//                    Mathf.Round((touchPosition.x + offset.x) / gridSize) * gridSize,
+//                    Mathf.Round((touchPosition.y + offset.y) / gridSize) * gridSize,
+//                    0f
+//                );
+//transform.position = newPosition;

@@ -61,6 +61,18 @@ public class ProjectileSpawning : MonoBehaviour
         if (GameController.GetComponent<GameController>().IsAutoClickActive == true)
         {
             AttackAnimation.SetBool("AutoClick", true);
+
+            if (SpawnDelay <= 0)
+            {
+                SpawnProjectile();
+
+                SpawnDelay = Temp_SpawnDelay;
+            }
+
+            else
+            {
+                SpawnDelay -= Time.deltaTime;
+            }
         }
 
         // Auto Click Animation
@@ -157,9 +169,7 @@ public class ProjectileSpawning : MonoBehaviour
         {       
             AttackAnimation.SetBool("Throw", true);
 
-            GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
-
-            projectile.GetComponent<ProjectileMovement>().Damage = Damage;
+            SpawnProjectile();
 
             SpawnDelay = Temp_SpawnDelay;
         }
@@ -170,5 +180,12 @@ public class ProjectileSpawning : MonoBehaviour
 
             SpawnDelay -= Time.deltaTime;
         }
+    }
+
+    private void SpawnProjectile()
+    {
+        GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+
+        projectile.GetComponent<ProjectileMovement>().Damage = Damage;
     }
 }

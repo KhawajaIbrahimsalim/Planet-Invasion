@@ -24,6 +24,7 @@ public class SpawnNewMergableObjects : MonoBehaviour
     {
         MergableObjects = GameObject.FindGameObjectsWithTag("Mergable");
 
+        // If Mergeable object is released elseWhere on the screen it will return to it original grid
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
