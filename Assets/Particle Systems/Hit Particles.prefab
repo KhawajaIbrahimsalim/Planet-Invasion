@@ -9807,6 +9807,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2916700627378087156}
     m_Modifications:
     - target: {fileID: 3377603164930766670, guid: fc05388b24fa403448aa3ebf7d425814, type: 3}
+      propertyPath: lengthInSec
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377603164930766670, guid: fc05388b24fa403448aa3ebf7d425814, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
       value: 0
       objectReference: {fileID: 0}

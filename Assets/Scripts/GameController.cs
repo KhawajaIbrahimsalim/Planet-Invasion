@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
     public GameObject FooterPanel;
     public GameObject StorePanel;
     public GameObject Damage_Indicator_txt;
+    [SerializeField] private TextMeshProUGUI HealthRemain_txt;
+    [SerializeField] private GameObject AutoClick_Indicator;
+    [SerializeField] private GameObject Damage5x_Indicator;
 
     [Header("Coins Properties:")]
     public float Coins;
@@ -40,11 +43,20 @@ public class GameController : MonoBehaviour
     [SerializeField] private float IncreaseCost;
     public bool IsWithInCost = false;
 
+    [Header("Itween Indicators Properties:")]
+    public float time;
+    public bool IsAnimating_Indicator = false;
+    public int BoostIndex = 0;
+
     private float Temp_DelayBeforeSpawn;
     private bool IsPaused = true;
     private bool IsUpgradePanelOpened = false;
     private Vector3 UpgradePanel_Pos;
     private Vector3 StorePanel_Pos;
+    private Vector3 AutoClick_Indicator_Pos;
+    private Vector3 Damage5x_Indicator_Pos;
+
+    [HideInInspector] public bool BonusCoinsAdded = false;
 
     private void Awake()
     {
@@ -55,7 +67,7 @@ public class GameController : MonoBehaviour
         Temp_DelayBeforeSpawn = DelayBeforeSpawn;
     }
 
-    private void Start()
+    private void Start() // When the point comes to call start() all values of the variables are set and also it means screen resolution is set also.
     {
         // For UpgradePanel
         UpgradePanel_Pos = UpgradePanel.transform.position;
@@ -73,6 +85,10 @@ public class GameController : MonoBehaviour
 
         // For Pause Panel
         PauseGame_Panel.transform.localScale = Vector3.zero;
+
+        // Set Pos for Indicator_Pos
+        AutoClick_Indicator_Pos = new Vector3(AutoClick_Indicator.transform.position.x + 50f, AutoClick_Indicator.transform.position.y, AutoClick_Indicator.transform.position.z);
+        Damage5x_Indicator_Pos = new Vector3(Damage5x_Indicator.transform.position.x + 50f, Damage5x_Indicator.transform.position.y, Damage5x_Indicator.transform.position.z);
     }
 
     private void Update()
@@ -111,7 +127,7 @@ public class GameController : MonoBehaviour
             CurrentPlanet = Instantiate(Planets[RandomPlanet], gameObject.transform.position, Quaternion.identity);
 
             // Make the GameController parent of the new Planet
-            CurrentPlanet.transform.parent = gameObject.transform;
+            CurrentPlanet.transform.SetParent(gameObject.transform);
 
             // Store the value of the HealthSum
             CurrentPlanet.GetComponent<PlanetCollisionEventSystem>().MaxHealth = CurrentPlanet.GetComponent<PlanetCollisionEventSystem>().Health = HealthSum;
@@ -125,34 +141,71 @@ public class GameController : MonoBehaviour
             // Diable the FiveX_Coins_txt
             BonusX_Coins_txt.SetActive(false);
 
-            // Enable Damage_Indicator_txt
-            Damage_Indicator_txt.SetActive(true); // So The Trick is when a planet is spawned Damage_Indicator_txt
-            // is Enabled so after that start function for the planet is called and in their Damage_Indicator_txt
-            // is found active in the scene but soon in the update it is Disabled, but it does not matter because
-            // in the Damage_Indicator_txt stores the gameobject for Damage_Indicator_txt which is on the scene
-            // so the memory is not deallocated by disabling it, it is simply stored premenanty in memory through-
-            // out the who session of the game, we are accessing that memory to access Damage_Indicator_txt.
+            BonusCoinsAdded = true;
+
+            BoostIndex++;
+
+            IsAnimating_Indicator = true;
+        }
+
+        else if (CurrentPlanet != null)
+        {
+            HealthRemain_txt.text = CurrentPlanet.GetComponent<PlanetCollisionEventSystem>().Health.ToString("0");
         }
 
         if (CurrentPlanet == null)
         {
+            // Get Bonus Coins when destroying a Planet
+            if (BonusCoinsAdded)
+            {
+                float Sum = Coins * BonusCoins;
+
+                Coins += Sum;
+
+                Coins_txt.text = CompressNumber(Coins);
+
+                // Enable BonusX_Coins_txt
+                BonusX_Coins_txt.SetActive(true);
+
+                BonusCoinsAdded = false;
+            }
+
+            // Set to zero
+            HealthRemain_txt.text = "0";
+
             DelayBeforeSpawn -= Time.deltaTime;
 
             // Disable Damage_Indicator_txt
             Damage_Indicator_txt.SetActive(false);
         }
 
-        // Bonus Coins After Destroying a Planet
-        if (CurrentPlanet != null && CurrentPlanet.GetComponent<PlanetCollisionEventSystem>().Health <= 0)
+        if (IsAnimating_Indicator && BoostIndex <= 3)
         {
-            float Sum = Coins * BonusCoins;
+            if (BoostIndex == 1 && GetComponent<Boosts>().AutoClick_Delay <= 0 && GetComponent<Boosts>().IsDelayChanged == true)
+            {
+                AutoClick_Indicator.SetActive(true);
+                Damage5x_Indicator.SetActive(false);
+                iTween.MoveTo(AutoClick_Indicator, iTween.Hash("position", AutoClick_Indicator_Pos, "time", time, "loopType", iTween.LoopType.pingPong));
 
-            Coins += Sum;
+                IsAnimating_Indicator = false; Debug.Log("BoostIndex 1");
+            }
 
-            Coins_txt.text = CompressNumber(Coins);
+            if (BoostIndex == 2 && GetComponent<Boosts>().TouchCount == GetComponent<Boosts>().MaxTouch && GetComponent<Boosts>().DelayDamage5x == GetComponent<Boosts>().MaxDelayDamage5x)
+            {
+                Damage5x_Indicator.SetActive(true);
+                AutoClick_Indicator.SetActive(false);
+                iTween.MoveTo(Damage5x_Indicator, iTween.Hash("position", Damage5x_Indicator_Pos, "time", time, "loopType", iTween.LoopType.pingPong));
+                
+                IsAnimating_Indicator = false;
+            }
 
-            // Activate the FiveX_Coins_txt
-            BonusX_Coins_txt.SetActive(true);
+            if (BoostIndex > 2)
+            {
+                AutoClick_Indicator.SetActive(false);
+                Damage5x_Indicator.SetActive(false);
+
+                IsAnimating_Indicator = false;
+            }
         }
     }
 

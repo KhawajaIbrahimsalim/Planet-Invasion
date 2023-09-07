@@ -19,8 +19,6 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     public GameObject Fire_Particles;
     public GameObject Fire_Particles_2;
 
-    [HideInInspector] public bool IfHealthIsHalf = false;
-
     private GameObject HealthBar;
     private bool IsHit = false;
     private bool IsHalfHealth = true;
@@ -30,17 +28,18 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     private GameObject Fire_particleSystem;
     private GameObject GameController;
     private GameObject[] Projectile;
+    private Vector3 Damage_Indicator_txt_pos;
 
     private void Awake()
     {
+        GameController = GameObject.Find("GameController");
+
         MaxHealth = 15000;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        GameController = GameObject.Find("GameController");
-
         HealthBar = GameObject.Find("HealthBar");
 
         if (Health == 0)
@@ -52,9 +51,17 @@ public class PlanetCollisionEventSystem : MonoBehaviour
         explostionParticles = null;
 
         HealthBar.GetComponent<Slider>().value = Health / MaxHealth;
+
+        // Itween Animation for Damage_Indicator_txt
+        {
+            Damage_Indicator_txt_pos = new Vector3(GameController.GetComponent<GameController>().Damage_Indicator_txt.transform.localPosition.x, GameController.GetComponent<GameController>().Damage_Indicator_txt.transform.localPosition.y + 350f, GameController.GetComponent<GameController>().Damage_Indicator_txt.transform.localPosition.z);
+
+            iTween.MoveTo(GameController.GetComponent<GameController>().Damage_Indicator_txt, iTween.Hash("position", Damage_Indicator_txt_pos, "time", 0.5f, "easetype", iTween.EaseType.easeInOutSine, "loopType", iTween.LoopType.loop));
+        }
     }
 
     // Update is called once per frame
+    [System.Obsolete]
     void Update()
     {
         Projectile = GameObject.FindGameObjectsWithTag("Projectile");

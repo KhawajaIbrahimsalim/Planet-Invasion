@@ -34,8 +34,6 @@ public class Boosts : MonoBehaviour
 
         // Show Touch
         Damage5x_txt.GetComponent<TextMeshProUGUI>().text = "Clicks: " + TouchCount + "/" + MaxTouch;
-
-        IsDelayChanged = true;
     }
 
     // Update is called once per frame
@@ -72,6 +70,9 @@ public class Boosts : MonoBehaviour
 
                 // Disable the AutoClick_txt so that DelayAfterPressingTheButton_txt can be visible
                 AutoClick_txt.SetActive(false);
+
+                // IsAnimating_Indicator = true to start the Arrow animation
+                GetComponent<GameController>().IsAnimating_Indicator = true;
             }
 
             // else continue to minus the delay
@@ -184,6 +185,9 @@ public class Boosts : MonoBehaviour
                 DelayDamage5x_txt.GetComponent<TextMeshProUGUI>().text = DelayDamage5x.ToString("0");
 
                 DelayDamage5x -= Time.deltaTime;
+
+                // IsAnimating_Indicator = true to start the Arrow animation
+                GetComponent<GameController>().IsAnimating_Indicator = true;
             }
         }
     }

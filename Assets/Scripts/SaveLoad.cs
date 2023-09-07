@@ -15,7 +15,6 @@ public class SaveData
     public int count;
     public bool IsNotFill;
     public int NoOfTilesFill;
-    public bool IfHealthIsHalf;
     public float AutoClick_Delay;
     public float DelayAfterPressingTheButton;
     public int TouchCount;
@@ -25,7 +24,9 @@ public class SaveData
     public bool IsDelayChanged = true;
     public float Coins;
     public float Cost;
+    public float MaxHealth;
     public float Health;
+    public float HealthSum;
     public float Offline_currencyPerSecond;
     public int Offline_Level;
     public float Offline_UpgradeCost;
@@ -35,6 +36,7 @@ public class SaveData
     public float Speed_SpeedRatio;
     public int Speed_Level;
     public float Speed_UpgradeCost;
+    public int BoostIndex = 0;
 }
 
 [System.Serializable]
@@ -90,18 +92,41 @@ public class SaveLoad : MonoBehaviour
                     {
                         GameObject planet = Instantiate(Planet, gameObject.transform.position, Quaternion.identity);
 
+                        // Set Parent
+                        planet.transform.SetParent(gameObject.transform);
+
                         GetComponent<GameController>().CurrentPlanet = planet;
+
+                        // Load MaxHealth
+                        planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth = data.MaxHealth;
 
                         // Load Health
                         planet.GetComponent<PlanetCollisionEventSystem>().Health = data.Health;
 
+                        // Load HealthSum
+                        GetComponent<GameController>().HealthSum = data.HealthSum;
+
                         // Show Health
-                        HealthBar.GetComponent<Slider>().value = planet.GetComponent<PlanetCollisionEventSystem>().Health / planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth;
+                        HealthBar.GetComponent<Slider>().value = data.Health / data.MaxHealth;
 
-                        // Activate the Particle system If it was Active
-                        planet.GetComponent<PlanetCollisionEventSystem>().IfHealthIsHalf = data.IfHealthIsHalf;
+                        // If Palnet is about to destroy then Enable Particles
+                        if (data.Health <= data.MaxHealth / 4)
+                        {
+                            GetComponent<GameController>().MeteorSpawnPoint_1.SetActive(true);
+                            GetComponent<GameController>().MeteorSpawnPoint_2.SetActive(true);
 
-                        Debug.Log(data.IfHealthIsHalf);
+                            GetComponent<GameController>().MeteorSpawnPoint_1.transform.parent = planet.transform;
+                            GetComponent<GameController>().MeteorSpawnPoint_2.transform.parent = planet.transform;
+                        }
+
+                        // Make it true when a new Planet is Spawned
+                        GetComponent<GameController>().BonusCoinsAdded = true;
+
+                        // Load IsAnimating_Indicator;
+                        GetComponent<GameController>().IsAnimating_Indicator = true;
+
+                        // Load BoostIndex;
+                        GetComponent<GameController>().BoostIndex = data.BoostIndex;
                     }
                 }
             }
@@ -162,17 +187,23 @@ public class SaveLoad : MonoBehaviour
 
             // Load Buy Button Properties
             {
-                // Load Coins
-                GetComponent<GameController>().Coins = data.Coins;
+                // Load Coins Properties
+                {
+                    // Load Coins
+                    GetComponent<GameController>().Coins = data.Coins;
 
-                // Show Coins
-                Coins_txt.text = GetComponent<GameController>().CompressNumber(data.Coins);
+                    // Show Coins
+                    Coins_txt.text = GetComponent<GameController>().CompressNumber(data.Coins);
+                }
 
-                // Load Cost
-                GetComponent<GameController>().Cost = data.Cost;
+                // Load Cost Properties
+                {
+                    // Load Cost
+                    GetComponent<GameController>().Cost = data.Cost;
 
-                // Show Cost
-                Cost_txt.text = GetComponent<GameController>().CompressNumber(data.Cost);
+                    // Show Cost
+                    Cost_txt.text = GetComponent<GameController>().CompressNumber(data.Cost);
+                }            
             }
 
             // Load Power Button Properties
@@ -306,11 +337,17 @@ public class SaveLoad : MonoBehaviour
             // Save Current Planet
             data.CurrentPlanet_name = Planet.name;
 
+            // Save Maxhealth
+            data.MaxHealth = Planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth;
+
             // Save Health
             data.Health = Planet.GetComponent<PlanetCollisionEventSystem>().Health;
 
-            // Save IfHealthIsHalf to Activate particle effects (StartParticlesFor_HalfHealth is a checking variable to check if it is Half Health of the Planet)
-            data.IfHealthIsHalf = Planet.GetComponent<PlanetCollisionEventSystem>().IfHealthIsHalf;
+            // Save HealthSum
+            data.HealthSum = GetComponent<GameController>().HealthSum;
+
+            // Save BoostIndex
+            data.BoostIndex = GetComponent<GameController>().BoostIndex;
         }
 
         else
