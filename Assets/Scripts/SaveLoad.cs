@@ -36,7 +36,9 @@ public class SaveData
     public float Speed_SpeedRatio;
     public int Speed_Level;
     public float Speed_UpgradeCost;
-    public int BoostIndex = 0;
+    public long BoostIndex = 0;
+    public int ShowRateUs_Index = 0;
+    public bool IsFree = true;
 }
 
 [System.Serializable]
@@ -62,7 +64,7 @@ public class SaveLoad : MonoBehaviour
     void Start()
     {
         savePath = Application.persistentDataPath + "/Max93.json";
-        File.Delete(savePath);
+        //File.Delete(savePath);
 
         // Load:
 
@@ -122,11 +124,14 @@ public class SaveLoad : MonoBehaviour
                         // Make it true when a new Planet is Spawned
                         GetComponent<GameController>().BonusCoinsAdded = true;
 
-                        // Load IsAnimating_Indicator;
+                        // Load IsAnimating_Indicator
                         GetComponent<GameController>().IsAnimating_Indicator = true;
 
-                        // Load BoostIndex;
+                        // Load BoostIndex
                         GetComponent<GameController>().BoostIndex = data.BoostIndex;
+
+                        // Load ShowRateUs_Index
+                        GetComponent<GameController>().ShowRateUs_Index = data.ShowRateUs_Index;
                     }
                 }
             }
@@ -187,6 +192,15 @@ public class SaveLoad : MonoBehaviour
 
             // Load Buy Button Properties
             {
+                GetComponent<GameController>().IsFree = data.IsFree;
+
+                if (data.IsFree == false)
+                {
+                    GetComponent<GameController>().Free_txt.SetActive(false);
+
+                    GetComponent<GameController>().Cost_txt.SetActive(true);
+                }
+
                 // Load Coins Properties
                 {
                     // Load Coins
@@ -203,7 +217,7 @@ public class SaveLoad : MonoBehaviour
 
                     // Show Cost
                     Cost_txt.text = GetComponent<GameController>().CompressNumber(data.Cost);
-                }            
+                }         
             }
 
             // Load Power Button Properties
@@ -231,6 +245,13 @@ public class SaveLoad : MonoBehaviour
             {
                 // Load SpeedRatio
                 GetComponent<SpeedUpgrade>().SpeedRatio = data.Speed_SpeedRatio;
+
+                if (data.Speed_SpeedRatio <= 0.5f) // If Speed Upgrade limit has reached its limit then Enable Completed Text and Disable Cost
+                {
+                    GetComponent<SpeedUpgrade>().BasicFrontCoin.SetActive(false);
+
+                    GetComponent<SpeedUpgrade>().Completed_txt.SetActive(true);
+                }
 
                 // Show SpeedRatio
                 GetComponent<SpeedUpgrade>().SpeedAmount_txt.text = data.Speed_SpeedRatio.ToString(".00");
@@ -348,6 +369,9 @@ public class SaveLoad : MonoBehaviour
 
             // Save BoostIndex
             data.BoostIndex = GetComponent<GameController>().BoostIndex;
+
+            // Save ShowRateUs_Index
+            data.ShowRateUs_Index = GetComponent<GameController>().ShowRateUs_Index;
         }
 
         else
@@ -355,6 +379,9 @@ public class SaveLoad : MonoBehaviour
             // Save Health
             data.Health = 0;
         }
+
+        // Save IsFree
+        data.IsFree = GetComponent<GameController>().IsFree;
 
         // Save IsNotFill
         data.IsNotFill = GetComponent<SpawnNewMergableObjects>().IsNotFill;

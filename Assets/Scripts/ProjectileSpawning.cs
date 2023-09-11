@@ -21,18 +21,21 @@ public class ProjectileSpawning : MonoBehaviour
     [SerializeField] private float AnimDelay;
 
     [HideInInspector] public bool IsDamageIncreased = false;
-    public bool IsDamageUpgraded = false;
+    [HideInInspector] public bool IsDamageUpgraded = false;
 
     private float Temp_AnimDelay;
     private float Temp_TouchSpawnDelay;
     private bool IsTouched;
     private GameObject GameController;
     private float Timer = 0f;
+    private GameObject Audio_Source;
 
     // Start is called before the first frame update
     void Start()
     {
         GameController = GameObject.Find("GameController");
+
+        Audio_Source = GameObject.Find("Audio Source");
 
         Temp_TouchSpawnDelay = TouchSpawnDelay;
 
@@ -121,9 +124,7 @@ public class ProjectileSpawning : MonoBehaviour
                         {
                             AttackAnimation.SetBool("AutoClick", true);
 
-                            GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
-
-                            projectile.GetComponent<ProjectileMovement>().Damage = Damage;
+                            SpawnProjectile();
 
                             IsTouched = false;
 
@@ -162,29 +163,60 @@ public class ProjectileSpawning : MonoBehaviour
             AnimDelay -= Time.deltaTime;
         }
 
-        // Throw Animation
-        // If Auto Click is off and also there is not touch then stop this animation and Spawn Projectile
-        if (SpawnDelay <= 0 && AnimDelay != Temp_AnimDelay && AttackAnimation.GetBool("AutoClick") == false
-            && GameController.GetComponent<GameController>().IsAutoClickActive == false)
-        {       
-            AttackAnimation.SetBool("Throw", true);
-
-            SpawnProjectile();
-
-            SpawnDelay = Temp_SpawnDelay;
-        }
-
-        else
+        // Auto Click animation
+        // At a certain Speed animation changes
+        if (GameController.GetComponent<SpeedUpgrade>().SpeedRatio <= 0.5f)
         {
-            AttackAnimation.SetBool("Throw", false);
+            if (SpawnDelay <= 0 && AnimDelay != Temp_AnimDelay && GameController.GetComponent<GameController>().IsAutoClickActive == false)
+            {
+                AttackAnimation.SetBool("AutoClick", true);
 
-            SpawnDelay -= Time.deltaTime;
+                SpawnProjectile();
+
+                SpawnDelay = Temp_SpawnDelay;
+            }
+
+            else
+            {
+                AttackAnimation.SetBool("AutoClick", true);
+
+                SpawnDelay -= Time.deltaTime;
+            }
         }
+
+        else // Throw Animation
+        {          
+            // If Auto Click is off and also there is not touch then stop this animation and Spawn Projectile
+            if (SpawnDelay <= 0 && AnimDelay != Temp_AnimDelay && AttackAnimation.GetBool("AutoClick") == false
+                && GameController.GetComponent<GameController>().IsAutoClickActive == false)
+            {
+                AttackAnimation.SetBool("Throw", true);
+
+                SpawnProjectile();
+
+                SpawnDelay = Temp_SpawnDelay;
+            }
+
+            else
+            {
+                AttackAnimation.SetBool("Throw", false);
+
+                SpawnDelay -= Time.deltaTime;
+            }
+        }
+
+        // Note: If AnimDelay != Temp_AnimDelay then the player is NOT touching the screen and vice versa
     }
 
     private void SpawnProjectile()
     {
         GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+
+        if (GameController.GetComponent<GameController>().CurrentPlanet)
+        {
+            // Find right Audio Source for the clip
+            Audio_Source.GetComponent<AudioController>().PlayAudioSource(Audio_Source: Audio_Source.GetComponent<AudioController>().Shoot_Audio);
+        }
 
         projectile.GetComponent<ProjectileMovement>().Damage = Damage;
     }

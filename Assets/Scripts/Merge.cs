@@ -16,6 +16,7 @@ public class Merge : MonoBehaviour
     private float goldenRatio = 0.618033988749895f;
     private float h = 0.0f;
     private int NumColor = 20;
+    private GameObject Audio_Source;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,8 @@ public class Merge : MonoBehaviour
         colors = new Color[NumColor];
 
         GameController = GameObject.Find("GameController");
+
+        Audio_Source = GameObject.Find("Audio Source");
 
         Priority = Random.Range(-LeverageMeter, LeverageMeter);
 
@@ -107,6 +110,9 @@ public class Merge : MonoBehaviour
 
     private void SpawnObject(Collider other)
     {
+        // Find right Audio Source for the clip
+        Audio_Source.GetComponent<AudioController>().PlayAudioSource(Audio_Source: Audio_Source.GetComponent<AudioController>().Fusion_Audio);
+
         GameObject newObj = Instantiate(NewObj);
 
         // Set Tag

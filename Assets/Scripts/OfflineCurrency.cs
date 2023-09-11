@@ -25,6 +25,9 @@ public class OfflineCurrency : MonoBehaviour
     public float UpgradeCost;
     [SerializeField] private float IncreaseCost;
 
+    private bool IsHeldDown = false;
+    private float MadeCoins = 0.0f;
+
     void Start()
     {
         if (Level != 1)
@@ -39,7 +42,7 @@ public class OfflineCurrency : MonoBehaviour
                 TimeSpan offlineTime = DateTime.Now - lastLoginTime;
 
                 // Add OfflineTime in Seconds in Coins with a maxOfflineTime limit multiply by currencyPerSecond
-                float MadeCoins = Mathf.Min((float)offlineTime.TotalSeconds, maxOfflineTime) * currencyPerSecond;
+                MadeCoins = Mathf.Min((float)offlineTime.TotalSeconds, maxOfflineTime) * currencyPerSecond;
 
                 GetComponent<GameController>().Coins += MadeCoins;
 
@@ -65,6 +68,14 @@ public class OfflineCurrency : MonoBehaviour
         PlayerPrefs.SetString("LastLoginTime", DateTime.Now.ToString());
 
         Debug.Log("Data and Time on Application Close: " + PlayerPrefs.GetString("LastLoginTime", ""));
+    }
+
+    private void Update()
+    {
+        if (IsHeldDown)
+        {
+            OfflineUpgrade();
+        }
     }
 
     public void OfflineUpgrade()
@@ -102,8 +113,33 @@ public class OfflineCurrency : MonoBehaviour
         }
     }
 
+    public void WatchAds_DoubleCoins()
+    {
+        // Initialize Ads
+
+
+        // Double the coins
+        MadeCoins *= 2;
+        GetComponent<GameController>().Coins += MadeCoins;
+
+        // Disable OfflineCoinsPanel
+        OfflineCoinsPanel.SetActive(false);
+
+        Debug.Log(MadeCoins);
+    }
+
     public void Close_btn()
     {
         OfflineCoinsPanel.SetActive(false);
+    }
+
+    public void OnPointerDown()
+    {
+        IsHeldDown = true;
+    }
+
+    public void OnPointerUp()
+    {
+        IsHeldDown = false;
     }
 }

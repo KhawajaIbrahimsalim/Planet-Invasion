@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Boosts : MonoBehaviour
@@ -12,6 +13,7 @@ public class Boosts : MonoBehaviour
     public float MaxDelayAfterPressingTheButton;
     [SerializeField] private GameObject DelayAfterPressingTheButton_txt;
     [SerializeField] private float ChangedSpawnDelay;
+    [SerializeField] private GameObject AutoClick_btn;
 
     [Header("Damage 5x Properties:")]
     public int TouchCount;
@@ -20,6 +22,7 @@ public class Boosts : MonoBehaviour
     public float DelayDamage5x;
     public float MaxDelayDamage5x;
     [SerializeField] private GameObject DelayDamage5x_txt;
+    [SerializeField] private GameObject Damage5x_btn;
 
     [HideInInspector] public bool IsDelayChanged = true;
 
@@ -71,8 +74,8 @@ public class Boosts : MonoBehaviour
                 // Disable the AutoClick_txt so that DelayAfterPressingTheButton_txt can be visible
                 AutoClick_txt.SetActive(false);
 
-                // IsAnimating_Indicator = true to start the Arrow animation
-                GetComponent<GameController>().IsAnimating_Indicator = true;
+                // Disable Insteractable of the button to appear dull colored
+                AutoClick_btn.GetComponent<Button>().interactable = false;
             }
 
             // else continue to minus the delay
@@ -111,6 +114,12 @@ public class Boosts : MonoBehaviour
 
                 GameController.GetComponent<GameController>().IsAutoClickActive = false;
 
+                // IsAnimating_Indicator = true to start the Arrow animation
+                GetComponent<GameController>().IsAnimating_Indicator = true;
+
+                // Enable Insteractable of the button
+                AutoClick_btn.GetComponent<Button>().interactable = true;
+
                 IsDelayChanged = true;
             }
         }
@@ -148,6 +157,9 @@ public class Boosts : MonoBehaviour
             // If Required touches on the screen is done and button is also clicked then Multiply damage by 5x
             if (GameController.GetComponent<GameController>().Damage5xIsActive && TouchCount == MaxTouch)
             {
+                // Disable Insteractable of the button to appear dull colored
+                Damage5x_btn.GetComponent<Button>().interactable = false;
+
                 Damage5x_txt.SetActive(false);
 
                 DelayDamage5x_txt.SetActive(true);
@@ -162,6 +174,12 @@ public class Boosts : MonoBehaviour
                         mergeable.GetComponent<ProjectileSpawning>().IsDamageIncreased = true;
                     }
                 }
+
+                // Show Delay time
+                DelayDamage5x_txt.GetComponent<TextMeshProUGUI>().text = DelayDamage5x.ToString("0");
+
+                // Decrease Delay time
+                DelayDamage5x -= Time.deltaTime;
 
                 // Reset Every Change
                 if (DelayDamage5x <= 0)
@@ -180,14 +198,13 @@ public class Boosts : MonoBehaviour
 
                         mergeable.GetComponent<ProjectileSpawning>().Damage = float.Parse(mergeable.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text) * GetComponent<PowerUpgrade>().DamageRatio;
                     }
+
+                    // IsAnimating_Indicator = true to start the Arrow animation
+                    GetComponent<GameController>().IsAnimating_Indicator = true;
+
+                    // Enable Insteractable of the button
+                    Damage5x_btn.GetComponent<Button>().interactable = true;
                 }
-
-                DelayDamage5x_txt.GetComponent<TextMeshProUGUI>().text = DelayDamage5x.ToString("0");
-
-                DelayDamage5x -= Time.deltaTime;
-
-                // IsAnimating_Indicator = true to start the Arrow animation
-                GetComponent<GameController>().IsAnimating_Indicator = true;
             }
         }
     }

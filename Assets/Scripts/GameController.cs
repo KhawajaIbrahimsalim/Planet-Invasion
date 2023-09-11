@@ -5,7 +5,6 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private float DelayBeforeSpawn;
-    [SerializeField] private float ItweenTime;
     [SerializeField] private GameObject BOOM;
 
     [Header("Planet Spawn Properties:")]
@@ -27,9 +26,13 @@ public class GameController : MonoBehaviour
     public GameObject FooterPanel;
     public GameObject StorePanel;
     public GameObject Damage_Indicator_txt;
+    public GameObject Free_txt;
     [SerializeField] private TextMeshProUGUI HealthRemain_txt;
     [SerializeField] private GameObject AutoClick_Indicator;
     [SerializeField] private GameObject Damage5x_Indicator;
+    [SerializeField] private GameObject Setting_Holder;
+    [SerializeField] private GameObject RateUsPanel;
+    [SerializeField] private GameObject Damage5x_btn;
 
     [Header("Coins Properties:")]
     public float Coins;
@@ -39,14 +42,22 @@ public class GameController : MonoBehaviour
 
     [Header("Buy Properties:")]
     public float Cost;
-    public TextMeshProUGUI Cost_txt;
+    public GameObject Cost_txt;
     [SerializeField] private float IncreaseCost;
     public bool IsWithInCost = false;
 
-    [Header("Itween Indicators Properties:")]
-    public float time;
-    public bool IsAnimating_Indicator = false;
-    public int BoostIndex = 0;
+    [Header("Itween Properties:")]
+    public float IndicatorsTime = 0;
+    [SerializeField] private float ItweenTime = 0;
+    [SerializeField] private float Free_txt_Time = 0;
+    [SerializeField] private Vector3 Free_AnimateScale;
+
+    [Header("Arrow Indicator Properties:")]
+    public bool IsAnimating_Indicator = true;
+
+    [Header("Control Index:")]
+    public long BoostIndex = 0;
+    public int ShowRateUs_Index = 0;
 
     private float Temp_DelayBeforeSpawn;
     private bool IsPaused = true;
@@ -55,8 +66,10 @@ public class GameController : MonoBehaviour
     private Vector3 StorePanel_Pos;
     private Vector3 AutoClick_Indicator_Pos;
     private Vector3 Damage5x_Indicator_Pos;
+    private bool IsSettingOpen = true;
 
     [HideInInspector] public bool BonusCoinsAdded = false;
+    [HideInInspector] public bool IsFree = true;
 
     private void Awake()
     {
@@ -83,14 +96,23 @@ public class GameController : MonoBehaviour
 
         StorePanel.transform.position = Store_btn.transform.position;
 
-        // For Pause Panel
+        // For PausePanel
         PauseGame_Panel.transform.localScale = Vector3.zero;
 
-        // Set Pos for Indicator_Pos
+        // For RateUsPanel
+        RateUsPanel.transform.localScale = Vector3.zero;
+
+        // Set Pos for Arrow Indicator_Pos
         AutoClick_Indicator_Pos = new Vector3(AutoClick_Indicator.transform.position.x + 50f, AutoClick_Indicator.transform.position.y, AutoClick_Indicator.transform.position.z);
         Damage5x_Indicator_Pos = new Vector3(Damage5x_Indicator.transform.position.x + 50f, Damage5x_Indicator.transform.position.y, Damage5x_Indicator.transform.position.z);
+
+
+
+        // For Free_txt
+        iTween.ScaleTo(Free_txt, iTween.Hash("scale", Free_AnimateScale, "time", Free_txt_Time, "loopType", iTween.LoopType.pingPong));
     }
 
+    [System.Obsolete]
     private void Update()
     {
         // If Player want to Pause the Game
@@ -145,12 +167,14 @@ public class GameController : MonoBehaviour
 
             BoostIndex++;
 
+            ShowRateUs_Index++;
+
             IsAnimating_Indicator = true;
         }
 
         else if (CurrentPlanet != null)
         {
-            HealthRemain_txt.text = CurrentPlanet.GetComponent<PlanetCollisionEventSystem>().Health.ToString("0");
+            HealthRemain_txt.text = CompressNumber(CurrentPlanet.GetComponent<PlanetCollisionEventSystem>().Health);
         }
 
         if (CurrentPlanet == null)
@@ -179,24 +203,40 @@ public class GameController : MonoBehaviour
             Damage_Indicator_txt.SetActive(false);
         }
 
+        if (ShowRateUs_Index >= 3) // To Show RateUsPanel
+        {
+            // Re-Scale back to normal size to make it visible
+            iTween.ScaleTo(RateUsPanel, iTween.Hash("scale", Vector3.one, "time", ItweenTime));
+
+            // Reset the PlanetIndex value
+            ShowRateUs_Index = 0;
+        }
+
         if (IsAnimating_Indicator && BoostIndex <= 3)
         {
-            if (BoostIndex == 1 && GetComponent<Boosts>().AutoClick_Delay <= 0 && GetComponent<Boosts>().IsDelayChanged == true)
+            if (BoostIndex == 1 && AutoClick_Indicator.active == false && GetComponent<Boosts>().AutoClick_Delay <= 0 && GetComponent<Boosts>().IsDelayChanged == true)
             {
+                // Disable Damage5x_btn to first only show AutoClick_btn
+                Damage5x_btn.SetActive(false);
+
                 AutoClick_Indicator.SetActive(true);
                 Damage5x_Indicator.SetActive(false);
-                iTween.MoveTo(AutoClick_Indicator, iTween.Hash("position", AutoClick_Indicator_Pos, "time", time, "loopType", iTween.LoopType.pingPong));
+                iTween.MoveTo(AutoClick_Indicator, iTween.Hash("position", AutoClick_Indicator_Pos, "time", IndicatorsTime, "loopType", iTween.LoopType.pingPong));
 
                 IsAnimating_Indicator = false; Debug.Log("BoostIndex 1");
             }
 
-            if (BoostIndex == 2 && GetComponent<Boosts>().TouchCount == GetComponent<Boosts>().MaxTouch && GetComponent<Boosts>().DelayDamage5x == GetComponent<Boosts>().MaxDelayDamage5x)
+            if (BoostIndex == 2 && Damage5x_Indicator.active == false && GetComponent<Boosts>().TouchCount == GetComponent<Boosts>().MaxTouch && GetComponent<Boosts>().DelayDamage5x == GetComponent<Boosts>().MaxDelayDamage5x)
             {
+                // Enable Damage5x_btn, now to also give tutorial for this button
+                Damage5x_btn.SetActive(true);
+
                 Damage5x_Indicator.SetActive(true);
                 AutoClick_Indicator.SetActive(false);
-                iTween.MoveTo(Damage5x_Indicator, iTween.Hash("position", Damage5x_Indicator_Pos, "time", time, "loopType", iTween.LoopType.pingPong));
+                iTween.MoveTo(Damage5x_Indicator, iTween.Hash("position", Damage5x_Indicator_Pos, "time", IndicatorsTime, "loopType", iTween.LoopType.pingPong));
                 
                 IsAnimating_Indicator = false;
+                Debug.Log("BoostIndex 2");
             }
 
             if (BoostIndex > 2)
@@ -205,6 +245,7 @@ public class GameController : MonoBehaviour
                 Damage5x_Indicator.SetActive(false);
 
                 IsAnimating_Indicator = false;
+                Debug.Log("BoostIndex 3");
             }
         }
     }
@@ -242,9 +283,21 @@ public class GameController : MonoBehaviour
     }
 
     // Connected Buy Button
+    [System.Obsolete]
     public void Buy()
     {
-        if (Coins >= Cost && GetComponent<SpawnNewMergableObjects>().IsNotFill == true)
+        if (Free_txt.active && IsFree)
+        {
+            Free_txt.SetActive(false);
+
+            Cost_txt.SetActive(true);
+
+            IsFree = false;
+
+            IsWithInCost = true;
+        }
+
+        else if (Coins >= Cost && GetComponent<SpawnNewMergableObjects>().IsNotFill == true && IsFree == false)
         {
             // Substract the Cost from the total Coins
             Coins -= Cost;
@@ -256,7 +309,7 @@ public class GameController : MonoBehaviour
             {
                 Cost *= IncreaseCost;
 
-                Cost_txt.text = CompressNumber(Cost);
+                Cost_txt.GetComponent<TextMeshProUGUI>().text = CompressNumber(Cost);
             }
 
             IsWithInCost = true;
@@ -265,6 +318,30 @@ public class GameController : MonoBehaviour
 
     public string CompressNumber(float num)
     {
+        if (num >= 1000000000000000000000000000000000000000000000000d)
+            return (num / 1000000000000000000000000000000000000000000000000d).ToString("0.#") + "ii";
+        if (num >= 10000000000000000000000000000000000000000000000d)
+            return (num / 10000000000000000000000000000000000000000000000d).ToString("0.#") + "i";
+        if (num >= 100000000000000000000000000000000000000000000d)
+            return (num / 100000000000000000000000000000000000000000000d).ToString("0.#") + "hh";
+        if (num >= 1000000000000000000000000000000000000000000d)
+            return (num / 1000000000000000000000000000000000000000000d).ToString("0.#") + "h";
+        if (num >= 10000000000000000000000000000000000000000d)
+            return (num / 10000000000000000000000000000000000000000d).ToString("0.#") + "gg";
+        if (num >= 100000000000000000000000000000000000000f)
+            return (num / 100000000000000000000000000000000000000f).ToString("0.#") + "g";
+        if (num >= 1000000000000000000000000000000000000f)
+            return (num / 1000000000000000000000000000000000000f).ToString("0.#") + "ff";
+        if (num >= 10000000000000000000000000000000000f)
+            return (num / 10000000000000000000000000000000000f).ToString("0.#") + "f";
+        if (num >= 100000000000000000000000000000000f)
+            return (num / 100000000000000000000000000000000f).ToString("0.#") + "ee";
+        if (num >= 1000000000000000000000000000000f)
+            return (num / 1000000000000000000000000000000f).ToString("0.#") + "e";
+        if (num >= 10000000000000000000000000000f)
+            return (num / 10000000000000000000000000000f).ToString("0.#") + "dd";
+        if (num >= 100000000000000000000000000f)
+            return (num / 100000000000000000000000000f).ToString("0.#") + "d";
         if (num >= 1000000000000000000000000f)
             return (num / 1000000000000000000000000f).ToString("0.#") + "cc";
         if (num >= 10000000000000000000000f)
@@ -337,5 +414,32 @@ public class GameController : MonoBehaviour
         iTween.ScaleTo(StorePanel, iTween.Hash("scale", Vector3.zero, "time", ItweenTime));
 
         iTween.MoveTo(StorePanel, iTween.Hash("position", Store_btn.transform.position, "time", ItweenTime));
+    }
+
+    public void OpenSetting()
+    {
+        if (IsSettingOpen)
+        {
+            Setting_Holder.SetActive(true);
+
+            IsSettingOpen = false;
+        }
+
+        else
+        {
+            Setting_Holder.SetActive(false);
+
+            IsSettingOpen = true;
+        }
+    }
+
+    public void Never_RateUs()
+    {
+        RateUsPanel.SetActive(false);
+    }
+
+    public void Later_RateUs()
+    {
+        iTween.ScaleTo(RateUsPanel, iTween.Hash("scale", Vector3.zero, "time", ItweenTime));
     }
 }

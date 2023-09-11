@@ -22,6 +22,7 @@ public class PowerUpgrade : MonoBehaviour
     [SerializeField] private GameObject[] MergeablePrefab;
 
     private float damage;
+    private bool IsHeldDown = false;
 
     // Update is called once per frame
     void Update()
@@ -44,6 +45,11 @@ public class PowerUpgrade : MonoBehaviour
 
                 // Note: It can only repeat when the Button is pressed to Increase the Damage more.
             }
+        }
+
+        if (IsHeldDown)
+        {
+            Power_Upgrade();
         }
     }
 
@@ -73,7 +79,15 @@ public class PowerUpgrade : MonoBehaviour
             DamageRatio += 0.1f;
 
             // Show DamageRatio
-            PowerAmount_txt.text = DamageRatio.ToString(".00");
+            if (DamageRatio > 1000)
+            {
+                PowerAmount_txt.text = GetComponent<GameController>().CompressNumber(DamageRatio);
+            }
+
+            else
+            {
+                PowerAmount_txt.text = DamageRatio.ToString(".0");
+            }
 
             // Set Damage for mergeable object that are in the scene
             foreach (var mergeable in GetComponent<Boosts>().MergeableObjects)
@@ -81,5 +95,15 @@ public class PowerUpgrade : MonoBehaviour
                 mergeable.GetComponent<ProjectileSpawning>().IsDamageUpgraded = false;
             }
         }
+    }
+
+    public void OnPointerDown()
+    {
+        IsHeldDown = true;
+    }
+
+    public void OnPointerUp()
+    {
+        IsHeldDown = false;
     }
 }

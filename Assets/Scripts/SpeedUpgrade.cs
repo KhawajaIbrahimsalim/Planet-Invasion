@@ -17,9 +17,13 @@ public class SpeedUpgrade : MonoBehaviour
     public TextMeshProUGUI Level_txt;
     public TextMeshProUGUI SpeedAmount_txt;
     public TextMeshProUGUI UpgradeCost_txt;
+    public GameObject BasicFrontCoin;
+    public GameObject Completed_txt;
 
     [Header("Mergeable Prefabs:")]
     [SerializeField] private GameObject[] MergeablePrefab;
+
+    private bool IsHeldDown = false;
 
     // Update is called once per frame
     void Update()
@@ -35,11 +39,16 @@ public class SpeedUpgrade : MonoBehaviour
                 }
             }
         }
+
+        if (IsHeldDown)
+        {
+            Speed_Upgrade();
+        }
     }
 
     public void Speed_Upgrade()
     {
-        if (GetComponent<GameController>().Coins >= UpgradeCost && SpeedRatio >= 0.5f)
+        if (GetComponent<GameController>().Coins >= UpgradeCost && SpeedRatio > 0.50f)
         {
             // Substract the Cost from the total Coins
             GetComponent<GameController>().Coins -= UpgradeCost;
@@ -65,5 +74,22 @@ public class SpeedUpgrade : MonoBehaviour
             // Show SpeedRatio
             SpeedAmount_txt.text = SpeedRatio.ToString(".00");
         }
+
+        if (SpeedRatio <= 0.5f) // If Speed Upgrade limit has reached its limit then Enable Completed Text and Disable Cost
+        {
+            BasicFrontCoin.SetActive(false);
+
+            Completed_txt.SetActive(true);
+        }
+    }
+
+    public void OnPointerDown()
+    {
+        IsHeldDown = true;
+    }
+
+    public void OnPointerUp()
+    {
+        IsHeldDown = false;
     }
 }

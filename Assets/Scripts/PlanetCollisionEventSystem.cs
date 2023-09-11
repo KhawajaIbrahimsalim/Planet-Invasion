@@ -29,6 +29,7 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     private GameObject GameController;
     private GameObject[] Projectile;
     private Vector3 Damage_Indicator_txt_pos;
+    private GameObject Audio_Source;
 
     private void Awake()
     {
@@ -40,6 +41,8 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Audio_Source = GameObject.Find("Audio Source");
+
         HealthBar = GameObject.Find("HealthBar");
 
         if (Health == 0)
@@ -161,6 +164,9 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     {
         if (IsDestroyed)
         {
+            // Find right Audio Source for the clip
+            Audio_Source.GetComponent<AudioController>().PlayAudioSource(Audio_Source: Audio_Source.GetComponent<AudioController>().BOOM_Audio);
+
             // Destry Every Projectile
             foreach (GameObject item in Projectile)
             {
