@@ -17,7 +17,7 @@ public class SpeedUpgrade : MonoBehaviour
     public TextMeshProUGUI Level_txt;
     public TextMeshProUGUI SpeedAmount_txt;
     public TextMeshProUGUI UpgradeCost_txt;
-    public GameObject BasicFrontCoin;
+    public GameObject Coin;
     public GameObject Completed_txt;
 
     [Header("Mergeable Prefabs:")]
@@ -77,7 +77,7 @@ public class SpeedUpgrade : MonoBehaviour
 
         if (SpeedRatio <= 0.5f) // If Speed Upgrade limit has reached its limit then Enable Completed Text and Disable Cost
         {
-            BasicFrontCoin.SetActive(false);
+            Coin.SetActive(false);
 
             Completed_txt.SetActive(true);
         }

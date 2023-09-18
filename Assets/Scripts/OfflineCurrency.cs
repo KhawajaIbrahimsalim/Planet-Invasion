@@ -64,9 +64,6 @@ public class OfflineCurrency : MonoBehaviour
     private void OnApplicationQuit()
     {
         // The game has been paused (e.g. the player closed the app)
-        // Save the current time to PlayerPrefs
-        PlayerPrefs.SetString("LastLoginTime", DateTime.Now.ToString());
-
         Debug.Log("Data and Time on Application Close: " + PlayerPrefs.GetString("LastLoginTime", ""));
     }
 
@@ -76,6 +73,9 @@ public class OfflineCurrency : MonoBehaviour
         {
             OfflineUpgrade();
         }
+
+        // Save the current time to PlayerPrefs
+        PlayerPrefs.SetString("LastLoginTime", DateTime.Now.ToString());
     }
 
     public void OfflineUpgrade()
@@ -115,12 +115,11 @@ public class OfflineCurrency : MonoBehaviour
 
     public void WatchAds_DoubleCoins()
     {
-        // Initialize Ads
-
-
         // Double the coins
         MadeCoins *= 2;
         GetComponent<GameController>().Coins += MadeCoins;
+
+        GetComponent<GameController>().Coins_txt.text = GetComponent<GameController>().CompressNumber(GetComponent<GameController>().Coins);
 
         // Disable OfflineCoinsPanel
         OfflineCoinsPanel.SetActive(false);

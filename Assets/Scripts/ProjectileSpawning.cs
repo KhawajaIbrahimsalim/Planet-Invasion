@@ -7,8 +7,8 @@ public class ProjectileSpawning : MonoBehaviour
     [Header("Spawn Properties:")]
     public float SpawnDelay;
     public float Temp_SpawnDelay;
+    public GameObject ProjectileSpawnPoint;
     [SerializeField] private GameObject Projectile;
-    [SerializeField] private GameObject ProjectileSpawnPoint;
     [SerializeField] private float HoldTime;
     [SerializeField] private float TouchSpawnDelay;
 
@@ -29,6 +29,7 @@ public class ProjectileSpawning : MonoBehaviour
     private GameObject GameController;
     private float Timer = 0f;
     private GameObject Audio_Source;
+    private bool FirstFireDeleted = false;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +56,10 @@ public class ProjectileSpawning : MonoBehaviour
         {
             IsDamageUpgraded = true;
         }
+
+        ProjectileSpawnPoint.transform.localPosition = Vector3.zero;
+
+        FirstFireDeleted = false;
     }
 
     // Update is called once per frame
@@ -169,6 +174,8 @@ public class ProjectileSpawning : MonoBehaviour
         {
             if (SpawnDelay <= 0 && AnimDelay != Temp_AnimDelay && GameController.GetComponent<GameController>().IsAutoClickActive == false)
             {
+                FirstFireDeleted = true;
+
                 AttackAnimation.SetBool("AutoClick", true);
 
                 SpawnProjectile();
@@ -190,6 +197,8 @@ public class ProjectileSpawning : MonoBehaviour
             if (SpawnDelay <= 0 && AnimDelay != Temp_AnimDelay && AttackAnimation.GetBool("AutoClick") == false
                 && GameController.GetComponent<GameController>().IsAutoClickActive == false)
             {
+                FirstFireDeleted = true;
+
                 AttackAnimation.SetBool("Throw", true);
 
                 SpawnProjectile();
@@ -210,14 +219,21 @@ public class ProjectileSpawning : MonoBehaviour
 
     private void SpawnProjectile()
     {
-        GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
-
-        if (GameController.GetComponent<GameController>().CurrentPlanet)
+        if (GameController.GetComponent<GameController>().CurrentPlanet && FirstFireDeleted)
         {
-            // Find right Audio Source for the clip
+            // Spawn Projectile
+            GameObject projectile = Instantiate(Projectile, ProjectileSpawnPoint.transform.position, Quaternion.identity);
+
+            // Set Damage
+            projectile.GetComponent<ProjectileMovement>().Damage = Damage;
+
+            // Play Audio for this action
             Audio_Source.GetComponent<AudioController>().PlayAudioSource(Audio_Source: Audio_Source.GetComponent<AudioController>().Shoot_Audio);
         }
 
-        projectile.GetComponent<ProjectileMovement>().Damage = Damage;
+        else
+        {
+            FirstFireDeleted = true;
+        }
     }
 }

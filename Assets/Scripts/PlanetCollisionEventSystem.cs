@@ -54,13 +54,6 @@ public class PlanetCollisionEventSystem : MonoBehaviour
         explostionParticles = null;
 
         HealthBar.GetComponent<Slider>().value = Health / MaxHealth;
-
-        // Itween Animation for Damage_Indicator_txt
-        {
-            Damage_Indicator_txt_pos = new Vector3(GameController.GetComponent<GameController>().Damage_Indicator_txt.transform.localPosition.x, GameController.GetComponent<GameController>().Damage_Indicator_txt.transform.localPosition.y + 350f, GameController.GetComponent<GameController>().Damage_Indicator_txt.transform.localPosition.z);
-
-            iTween.MoveTo(GameController.GetComponent<GameController>().Damage_Indicator_txt, iTween.Hash("position", Damage_Indicator_txt_pos, "time", 0.5f, "easetype", iTween.EaseType.easeInOutSine, "loopType", iTween.LoopType.loop));
-        }
     }
 
     // Update is called once per frame
@@ -164,7 +157,7 @@ public class PlanetCollisionEventSystem : MonoBehaviour
     {
         if (IsDestroyed)
         {
-            // Find right Audio Source for the clip
+            // Play Audio for this action
             Audio_Source.GetComponent<AudioController>().PlayAudioSource(Audio_Source: Audio_Source.GetComponent<AudioController>().BOOM_Audio);
 
             // Destry Every Projectile

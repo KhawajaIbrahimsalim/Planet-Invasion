@@ -7,6 +7,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private float DelayBeforeSpawn;
     [SerializeField] private GameObject BOOM;
 
+    [Header("Unity Ads")]
+    [SerializeField] GameObject Unity_ad_Controller;
+
     [Header("Planet Spawn Properties:")]
     public GameObject[] Planets;
     public GameObject CurrentPlanet;
@@ -27,12 +30,12 @@ public class GameController : MonoBehaviour
     public GameObject StorePanel;
     public GameObject Damage_Indicator_txt;
     public GameObject Free_txt;
+    public GameObject Damage5x_btn;
     [SerializeField] private TextMeshProUGUI HealthRemain_txt;
     [SerializeField] private GameObject AutoClick_Indicator;
     [SerializeField] private GameObject Damage5x_Indicator;
     [SerializeField] private GameObject Setting_Holder;
     [SerializeField] private GameObject RateUsPanel;
-    [SerializeField] private GameObject Damage5x_btn;
 
     [Header("Coins Properties:")]
     public float Coins;
@@ -44,20 +47,24 @@ public class GameController : MonoBehaviour
     public float Cost;
     public GameObject Cost_txt;
     [SerializeField] private float IncreaseCost;
-    public bool IsWithInCost = false;
+    public bool IsWithInCost = true;
 
     [Header("Itween Properties:")]
     public float IndicatorsTime = 0;
     [SerializeField] private float ItweenTime = 0;
-    [SerializeField] private float Free_txt_Time = 0;
-    [SerializeField] private Vector3 Free_AnimateScale;
 
     [Header("Arrow Indicator Properties:")]
     public bool IsAnimating_Indicator = true;
 
     [Header("Control Index:")]
-    public long BoostIndex = 0;
     public int ShowRateUs_Index = 0;
+    public int CountForAds = 1;
+    public int PlanetIndex = 0;
+    public long BoostIndex = 0;
+
+    [Header("Tutorial Properties:")]
+    public GameObject TutorialPanel;
+    public bool TutorialPanelActive = false;
 
     private float Temp_DelayBeforeSpawn;
     private bool IsPaused = true;
@@ -106,17 +113,22 @@ public class GameController : MonoBehaviour
         AutoClick_Indicator_Pos = new Vector3(AutoClick_Indicator.transform.position.x + 50f, AutoClick_Indicator.transform.position.y, AutoClick_Indicator.transform.position.z);
         Damage5x_Indicator_Pos = new Vector3(Damage5x_Indicator.transform.position.x + 50f, Damage5x_Indicator.transform.position.y, Damage5x_Indicator.transform.position.z);
 
-
-
-        // For Free_txt
-        iTween.ScaleTo(Free_txt, iTween.Hash("scale", Free_AnimateScale, "time", Free_txt_Time, "loopType", iTween.LoopType.pingPong));
+        Cost_txt.SetActive(false); // WARNING: Make it Disable after awake in start and do not Disable in scene view
     }
 
     [System.Obsolete]
     private void Update()
     {
-        // If Player want to Pause the Game
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Q))
+        // For Tutorial Panel, When tap any where on the screen disable it.
+        if (Input.touchCount > 0 && TutorialPanelActive)
+        {
+            TutorialPanel.SetActive(false);
+
+            TutorialPanelActive = false;
+        }
+
+        // If Player want to Pause the Game only when tutorial screen is off
+        if (TutorialPanelActive == false && Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Q))
         {
             if (IsPaused)
             {
@@ -134,7 +146,7 @@ public class GameController : MonoBehaviour
         }
 
         // To Spawn a new Planet when destroyed
-        if (CurrentPlanet == null && DelayBeforeSpawn <= 0f) 
+        if (TutorialPanelActive == false && CurrentPlanet == null && DelayBeforeSpawn <= 0f) 
         {
             // Find Boom Explosion and...
             BOOM = GameObject.Find("Boom(Clone)");
@@ -168,6 +180,14 @@ public class GameController : MonoBehaviour
             BoostIndex++;
 
             ShowRateUs_Index++;
+
+            PlanetIndex++;
+
+            if (PlanetIndex >= 4)
+            {
+                // Show Ad After 4 Planets are Destroyed
+                Unity_ad_Controller.GetComponent<UNITY_Interstitial_ADS>().ShowAd();
+            }
 
             IsAnimating_Indicator = true;
         }
@@ -203,16 +223,16 @@ public class GameController : MonoBehaviour
             Damage_Indicator_txt.SetActive(false);
         }
 
-        if (ShowRateUs_Index >= 3) // To Show RateUsPanel
+        if (CurrentPlanet && ShowRateUs_Index >= 3) // To Show RateUsPanel
         {
             // Re-Scale back to normal size to make it visible
             iTween.ScaleTo(RateUsPanel, iTween.Hash("scale", Vector3.one, "time", ItweenTime));
 
-            // Reset the PlanetIndex value
+            // Reset the ShowRateUs_Index value
             ShowRateUs_Index = 0;
         }
 
-        if (IsAnimating_Indicator && BoostIndex <= 3)
+        if (CurrentPlanet && IsAnimating_Indicator && BoostIndex <= 3)
         {
             if (BoostIndex == 1 && AutoClick_Indicator.active == false && GetComponent<Boosts>().AutoClick_Delay <= 0 && GetComponent<Boosts>().IsDelayChanged == true)
             {
@@ -282,11 +302,15 @@ public class GameController : MonoBehaviour
         Damage5xIsActive = true;
     }
 
+    public void BuyForAds()
+    {
+        IsWithInCost = true;
+    }
+
     // Connected Buy Button
-    [System.Obsolete]
     public void Buy()
     {
-        if (Free_txt.active && IsFree)
+        if (IsFree)
         {
             Free_txt.SetActive(false);
 
@@ -297,8 +321,10 @@ public class GameController : MonoBehaviour
             IsWithInCost = true;
         }
 
-        else if (Coins >= Cost && GetComponent<SpawnNewMergableObjects>().IsNotFill == true && IsFree == false)
+        if (Coins >= Cost && GetComponent<SpawnNewMergableObjects>().IsNotFill == true && IsFree == false)
         {
+            Insterstitial_Ads_Caller();//shows ad.
+
             // Substract the Cost from the total Coins
             Coins -= Cost;
 
@@ -313,6 +339,20 @@ public class GameController : MonoBehaviour
             }
 
             IsWithInCost = true;
+        }
+    }
+
+    //Calls a Insterstitial Ad after four heros are bought.
+    private void Insterstitial_Ads_Caller()
+    {
+        if (CountForAds >= 4)
+        {
+            Unity_ad_Controller.GetComponent<UNITY_Interstitial_ADS>().ShowAd();
+            CountForAds = 1;
+        }
+        else
+        {
+            CountForAds++;
         }
     }
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioController : MonoBehaviour
@@ -9,6 +7,7 @@ public class AudioController : MonoBehaviour
     public AudioSource BOOM_Audio;
     public AudioSource Fusion_Audio;
     public AudioSource BackGround_Music;
+    public AudioSource Get2x_Audio;
 
     private bool IsVolumeOn = true;
     public void Music_On()

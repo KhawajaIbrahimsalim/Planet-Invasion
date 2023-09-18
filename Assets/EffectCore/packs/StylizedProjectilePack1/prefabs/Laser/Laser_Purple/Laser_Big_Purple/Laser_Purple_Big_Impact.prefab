@@ -33535,7 +33535,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4202549611881306}
   - {fileID: 4844291515055092}
   - {fileID: 4060515698031734}
   - {fileID: 4659616700009460}
@@ -38379,7 +38378,7 @@ MonoBehaviour:
   colorChangeList:
   - Name: Sparks
     colored_ParticleSystem:
-    - {fileID: 198183221796487404}
+    - {fileID: 0}
     Gradient_custom:
       serializedVersion: 2
       key0: {r: 0.9044118, g: 0.9802231, b: 1, a: 1}
@@ -38815,7 +38814,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.11764706}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -43382,70 +43381,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!1001 &3692732406952141979
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4541196389373984}
-    m_Modifications:
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.96592593
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.25881898
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.00000008940697
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.00000064074993
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -30.000002
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3691501572690766851, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-      propertyPath: m_Name
-      value: impactSparks
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
---- !u!4 &4202549611881306 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3688965678946109377, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-  m_PrefabInstance: {fileID: 3692732406952141979}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &198183221796487404 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3602648908362933367, guid: 86b8b8e5b0e0f1843b1361817016a492, type: 3}
-  m_PrefabInstance: {fileID: 3692732406952141979}
-  m_PrefabAsset: {fileID: 0}

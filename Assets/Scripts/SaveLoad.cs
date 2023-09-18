@@ -39,6 +39,7 @@ public class SaveData
     public long BoostIndex = 0;
     public int ShowRateUs_Index = 0;
     public bool IsFree = true;
+    public bool TutorialPanelActive = false;
 }
 
 [System.Serializable]
@@ -85,55 +86,74 @@ public class SaveLoad : MonoBehaviour
                 GetComponent<SpawnNewMergableObjects>().NoOfTilesFill = data.NoOfTilesFill;
             }
 
+            // For Tutorial Properties
+            {
+                GetComponent<GameController>().TutorialPanelActive = data.TutorialPanelActive;
+            }
+
             // For Planet Load
             {
-                // Spawn the last saved Planet
-                foreach (GameObject Planet in GetComponent<GameController>().Planets)
+                if (data.TutorialPanelActive == false)
                 {
-                    if (data.CurrentPlanet_name == Planet.name + "(Clone)")
+                    GetComponent<GameController>().TutorialPanel.SetActive(false);
+
+                    // Spawn the last saved Planet
+                    foreach (GameObject Planet in GetComponent<GameController>().Planets)
                     {
-                        GameObject planet = Instantiate(Planet, gameObject.transform.position, Quaternion.identity);
-
-                        // Set Parent
-                        planet.transform.SetParent(gameObject.transform);
-
-                        GetComponent<GameController>().CurrentPlanet = planet;
-
-                        // Load MaxHealth
-                        planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth = data.MaxHealth;
-
-                        // Load Health
-                        planet.GetComponent<PlanetCollisionEventSystem>().Health = data.Health;
-
-                        // Load HealthSum
-                        GetComponent<GameController>().HealthSum = data.HealthSum;
-
-                        // Show Health
-                        HealthBar.GetComponent<Slider>().value = data.Health / data.MaxHealth;
-
-                        // If Palnet is about to destroy then Enable Particles
-                        if (data.Health <= data.MaxHealth / 4)
+                        if (data.CurrentPlanet_name == Planet.name + "(Clone)")
                         {
-                            GetComponent<GameController>().MeteorSpawnPoint_1.SetActive(true);
-                            GetComponent<GameController>().MeteorSpawnPoint_2.SetActive(true);
+                            GameObject planet = Instantiate(Planet, gameObject.transform.position, Quaternion.identity);
 
-                            GetComponent<GameController>().MeteorSpawnPoint_1.transform.parent = planet.transform;
-                            GetComponent<GameController>().MeteorSpawnPoint_2.transform.parent = planet.transform;
+                            // Set Parent
+                            planet.transform.SetParent(gameObject.transform);
+
+                            GetComponent<GameController>().CurrentPlanet = planet;
+
+                            // Load MaxHealth
+                            planet.GetComponent<PlanetCollisionEventSystem>().MaxHealth = data.MaxHealth;
+
+                            // Load Health
+                            planet.GetComponent<PlanetCollisionEventSystem>().Health = data.Health;
+
+                            // Load HealthSum
+                            GetComponent<GameController>().HealthSum = data.HealthSum;
+
+                            // Show Health
+                            HealthBar.GetComponent<Slider>().value = data.Health / data.MaxHealth;
+
+                            // If Palnet is about to destroy then Enable Particles
+                            if (data.Health <= data.MaxHealth / 4)
+                            {
+                                GetComponent<GameController>().MeteorSpawnPoint_1.SetActive(true);
+                                GetComponent<GameController>().MeteorSpawnPoint_2.SetActive(true);
+
+                                GetComponent<GameController>().MeteorSpawnPoint_1.transform.parent = planet.transform;
+                                GetComponent<GameController>().MeteorSpawnPoint_2.transform.parent = planet.transform;
+                            }
+
+                            // Make it true when a new Planet is Spawned
+                            GetComponent<GameController>().BonusCoinsAdded = true;
+
+                            // Load IsAnimating_Indicator
+                            GetComponent<GameController>().IsAnimating_Indicator = true;
+
+                            // Load BoostIndex
+                            GetComponent<GameController>().BoostIndex = data.BoostIndex;
+
+                            // Same as in "GameController" Script when index is 1 then Disable Damage5x_btn
+                            if (data.BoostIndex == 1)
+                            {
+                                GetComponent<GameController>().Damage5x_btn.SetActive(false);
+                            }
+
+                            // Load ShowRateUs_Index
+                            GetComponent<GameController>().ShowRateUs_Index = data.ShowRateUs_Index;
+
+                            // Increment PlanetIndex
+                            GetComponent<GameController>().PlanetIndex++;
                         }
-
-                        // Make it true when a new Planet is Spawned
-                        GetComponent<GameController>().BonusCoinsAdded = true;
-
-                        // Load IsAnimating_Indicator
-                        GetComponent<GameController>().IsAnimating_Indicator = true;
-
-                        // Load BoostIndex
-                        GetComponent<GameController>().BoostIndex = data.BoostIndex;
-
-                        // Load ShowRateUs_Index
-                        GetComponent<GameController>().ShowRateUs_Index = data.ShowRateUs_Index;
                     }
-                }
+                }           
             }
 
             // For Mergable objects Load
@@ -159,6 +179,9 @@ public class SaveLoad : MonoBehaviour
 
                         // Set LocalPosition
                         mergable.transform.localPosition = Vector3.zero;
+
+                        // Set ProjectileSpawnPoint Position to zero
+                        mergable.GetComponent<ProjectileSpawning>().ProjectileSpawnPoint.transform.localPosition = Vector3.zero;
 
                         //mergable.transform.parent.GetComponent<TileEmptyStatus>().IsEmpty = false;
 
@@ -248,7 +271,7 @@ public class SaveLoad : MonoBehaviour
 
                 if (data.Speed_SpeedRatio <= 0.5f) // If Speed Upgrade limit has reached its limit then Enable Completed Text and Disable Cost
                 {
-                    GetComponent<SpeedUpgrade>().BasicFrontCoin.SetActive(false);
+                    GetComponent<SpeedUpgrade>().Coin.SetActive(false);
 
                     GetComponent<SpeedUpgrade>().Completed_txt.SetActive(true);
                 }
@@ -289,6 +312,11 @@ public class SaveLoad : MonoBehaviour
                 // Show Upgrade Cost
                 GetComponent<OfflineCurrency>().UpgradeCost_txt.text = GetComponent<GameController>().CompressNumber(data.Offline_UpgradeCost);
             }
+
+            // Load Ads Properties
+            {
+                // Load CountForAds
+            }
         }
     }
 
@@ -322,6 +350,7 @@ public class SaveLoad : MonoBehaviour
 
         // Save:
 
+        // For Mergeable objects Position and Tiles Save
         for (int i = 0; i < Tiles.Length; i++)
         {
             if (Tiles[i] != null && Tiles[i].GetComponent<TileEmptyStatus>().IsEmpty == false && Tiles[i].transform.childCount > 0)
@@ -353,6 +382,12 @@ public class SaveLoad : MonoBehaviour
             }
         }
 
+        // For Save Tutorial Properties
+        {
+            data.TutorialPanelActive = GetComponent<GameController>().TutorialPanelActive;
+        }
+
+        // For Save Planet Properties
         if (Planet)
         {
             // Save Current Planet
@@ -452,6 +487,11 @@ public class SaveLoad : MonoBehaviour
 
             // Save UpgradeCost
             data.Offline_UpgradeCost = GetComponent<OfflineCurrency>().UpgradeCost;
+        }
+
+        // Save Ads Properties
+        {
+            
         }
 
         // save data to Json
