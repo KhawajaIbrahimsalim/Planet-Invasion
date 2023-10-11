@@ -40,6 +40,9 @@ public class SaveData
     public int ShowRateUs_Index = 0;
     public bool IsFree = true;
     public bool TutorialPanelActive = false;
+    public bool IsPurchased = false;
+    public bool PurchaseButton_Interactable;
+    public bool BuyFromAdsButton_Interactable;
 }
 
 [System.Serializable]
@@ -64,6 +67,8 @@ public class SaveLoad : MonoBehaviour
 
     void Start()
     {
+        Canvas.ForceUpdateCanvases();
+
         savePath = Application.persistentDataPath + "/Max93.json";
         //File.Delete(savePath);
 
@@ -313,9 +318,16 @@ public class SaveLoad : MonoBehaviour
                 GetComponent<OfflineCurrency>().UpgradeCost_txt.text = GetComponent<GameController>().CompressNumber(data.Offline_UpgradeCost);
             }
 
-            // Load Ads Properties
+            // Load InApp-Purchase Properties
             {
-                // Load CountForAds
+                // Load IsPurchased
+                GetComponent<GameController>().IsPurchased = data.IsPurchased;
+
+                // Load PurchaseButton_Interactible
+                GetComponent<GameController>().Purchase_btn.interactable = data.PurchaseButton_Interactable;
+
+                // Load BuyFromAdsButton_Interactable
+                GetComponent<GameController>().BuyFromAds_btn.interactable = data.BuyFromAdsButton_Interactable;
             }
         }
     }
@@ -489,9 +501,16 @@ public class SaveLoad : MonoBehaviour
             data.Offline_UpgradeCost = GetComponent<OfflineCurrency>().UpgradeCost;
         }
 
-        // Save Ads Properties
+        // Save InApp-Purchase Properties
         {
-            
+            // Save IsPurchased
+            data.IsPurchased = GetComponent<GameController>().IsPurchased;
+
+            // Save PurchaseButton_Interactible
+            data.PurchaseButton_Interactable = GetComponent<GameController>().Purchase_btn.interactable;
+
+            // Save data.BuyFromAdsButton_Interactable
+            data.BuyFromAdsButton_Interactable = GetComponent<GameController>().BuyFromAds_btn.interactable;
         }
 
         // save data to Json

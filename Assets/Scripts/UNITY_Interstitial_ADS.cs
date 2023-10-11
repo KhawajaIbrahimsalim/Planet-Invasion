@@ -7,8 +7,12 @@ public class UNITY_Interstitial_ADS : MonoBehaviour, IUnityAdsLoadListener, IUni
     [SerializeField] string _iOsAdUnitId = "Interstitial_iOS";
     string _adUnitId;
 
+    private GameObject GameController;
+
     void Awake()
     {
+        GameController = GameObject.Find("GameController");
+
         // Get the Ad Unit ID for the current platform:
         _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
             ? _iOsAdUnitId
@@ -26,9 +30,13 @@ public class UNITY_Interstitial_ADS : MonoBehaviour, IUnityAdsLoadListener, IUni
     // Show the loaded content in the Ad Unit:
     public void ShowAd()
     {
-        // Note that if the ad content wasn't previously loaded, this method will fail
-        Debug.Log("Showing Ad: " + _adUnitId);
-        Advertisement.Show(_adUnitId, this);
+        // If IsPurchase is true then the purchase has been done so no Ads will be shown
+        if (GameController.GetComponent<GameController>().IsPurchased == false)
+        {
+            // Note that if the ad content wasn't previously loaded, this method will fail
+            Debug.Log("Showing Ad: " + _adUnitId);
+            Advertisement.Show(_adUnitId, this);
+        }
     }
 
     // Implement Load Listener and Show Listener interface methods: 

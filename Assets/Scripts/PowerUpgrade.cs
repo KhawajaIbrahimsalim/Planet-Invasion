@@ -31,14 +31,23 @@ public class PowerUpgrade : MonoBehaviour
         {
             if (mergeable.GetComponent<ProjectileSpawning>().IsDamageUpgraded == false)
             {
-                // Set The Default value
-                mergeable.GetComponent<ProjectileSpawning>().Damage = float.Parse(mergeable.GetComponent<ProjectileSpawning>().TimesPower_txt.text);
+                if (GetComponent<GameController>().Damage5xIsActive) // Boost is On
+                {
+                    // Then Add it in the Damage
+                    mergeable.GetComponent<ProjectileSpawning>().Damage += DamageRatio;
+                }
 
-                // Then Multiply the DamageRatio
-                damage = mergeable.GetComponent<ProjectileSpawning>().Damage * DamageRatio;
+                else
+                {
+                    // Set The Default value
+                    mergeable.GetComponent<ProjectileSpawning>().Damage = float.Parse(mergeable.GetComponent<ProjectileSpawning>().TimesPower_txt.text);
 
-                // Then store it in the Damage
-                mergeable.GetComponent<ProjectileSpawning>().Damage = damage;
+                    // Then Multiply the DamageRatio
+                    damage = mergeable.GetComponent<ProjectileSpawning>().Damage * DamageRatio;
+
+                    // Then store it in the Damage
+                    mergeable.GetComponent<ProjectileSpawning>().Damage = damage;
+                }
 
                 // Make the IsDamageUpgraded false so the it won't repeat it self every frame
                 mergeable.GetComponent<ProjectileSpawning>().IsDamageUpgraded = true;

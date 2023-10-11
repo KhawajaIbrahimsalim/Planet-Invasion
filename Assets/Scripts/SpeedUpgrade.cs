@@ -40,7 +40,7 @@ public class SpeedUpgrade : MonoBehaviour
             }
         }
 
-        if (IsHeldDown)
+        if (IsHeldDown && GetComponent<GameController>().IsPurchased == false)
         {
             Speed_Upgrade();
         }

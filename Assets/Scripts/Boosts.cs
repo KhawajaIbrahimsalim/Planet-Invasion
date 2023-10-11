@@ -14,6 +14,8 @@ public class Boosts : MonoBehaviour
     [SerializeField] private GameObject DelayAfterPressingTheButton_txt;
     [SerializeField] private float ChangedSpawnDelay;
     [SerializeField] private GameObject AutoClick_btn;
+    [SerializeField] private GameObject AutoClick_Activated_txt;
+    [SerializeField] private Button Speed_btn;
 
     [Header("Damage 5x Properties:")]
     public int TouchCount;
@@ -48,6 +50,34 @@ public class Boosts : MonoBehaviour
 
             // Show time every frame
             AutoClick_txt.GetComponent<TextMeshProUGUI>().text = "Auto: " + AutoClick_Delay.ToString("0") + "/" + MaxAutoClickDelay.ToString("0");
+
+            // if "IsPurchased" is true then:
+            if (GameController.GetComponent<GameController>().IsPurchased)
+            {
+                // "AutoClick_Delay" will always be 0 and DelayAfterPressingTheButton will be max/full
+                AutoClick_Delay = 0;
+                DelayAfterPressingTheButton = MaxDelayAfterPressingTheButton;
+
+                // Disable the AutoClick_txt and DelayAfterPressingTheButton_txt
+                AutoClick_txt.SetActive(false);
+                DelayAfterPressingTheButton_txt.SetActive(false);
+
+                // Enable the AutoClick_Activated_txt
+                AutoClick_Activated_txt.SetActive(true);
+
+                // Speed Upgrade button:
+                // Show SpeedRatio
+                GetComponent<SpeedUpgrade>().SpeedAmount_txt.text = ".50";
+
+                // Disable Coin
+                GetComponent<SpeedUpgrade>().Coin.SetActive(false);
+
+                // Enable Completed_txt
+                GetComponent<SpeedUpgrade>().Completed_txt.SetActive(true);
+
+                // Speed_btn Interactable = false
+                Speed_btn.interactable = false;
+            }
 
             // IsAutoClickActive should always be false if AutoClick_Delay > 0, I have to write this because IsAutoClickActive
             // is true when we click the button
@@ -85,7 +115,8 @@ public class Boosts : MonoBehaviour
             }
 
             // Now if AutoClick_Delay is <= 0 so now its time to have a delay for how long the SpawnDelay is shorten
-            if (IsDelayChanged == false && DelayAfterPressingTheButton > 0)
+            if (IsDelayChanged == false && DelayAfterPressingTheButton > 0 
+                && GameController.GetComponent<GameController>().IsPurchased == false)
             {
                 DelayAfterPressingTheButton_txt.SetActive(true);
 

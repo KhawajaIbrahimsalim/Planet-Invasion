@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class GameController : MonoBehaviour
@@ -31,6 +32,8 @@ public class GameController : MonoBehaviour
     public GameObject Damage_Indicator_txt;
     public GameObject Free_txt;
     public GameObject Damage5x_btn;
+    public Button Purchase_btn;
+    public Button BuyFromAds_btn;
     [SerializeField] private TextMeshProUGUI HealthRemain_txt;
     [SerializeField] private GameObject AutoClick_Indicator;
     [SerializeField] private GameObject Damage5x_Indicator;
@@ -56,15 +59,21 @@ public class GameController : MonoBehaviour
     [Header("Arrow Indicator Properties:")]
     public bool IsAnimating_Indicator = true;
 
+    [Header("Tutorial Properties:")]
+    public GameObject TutorialPanel;
+    public bool TutorialPanelActive = false;
+
+    [Header("Privacy policy Properties:")]
+    public string PrivacyPolicy_Link;
+
+    [Header("Rate Us Properties:")]
+    public string RateUs_Link;
+
     [Header("Control Index:")]
     public int ShowRateUs_Index = 0;
     public int CountForAds = 1;
     public int PlanetIndex = 0;
     public long BoostIndex = 0;
-
-    [Header("Tutorial Properties:")]
-    public GameObject TutorialPanel;
-    public bool TutorialPanelActive = false;
 
     private float Temp_DelayBeforeSpawn;
     private bool IsPaused = true;
@@ -77,6 +86,7 @@ public class GameController : MonoBehaviour
 
     [HideInInspector] public bool BonusCoinsAdded = false;
     [HideInInspector] public bool IsFree = true;
+    [HideInInspector] public bool IsPurchased = false;
 
     private void Awake()
     {
@@ -113,7 +123,7 @@ public class GameController : MonoBehaviour
         AutoClick_Indicator_Pos = new Vector3(AutoClick_Indicator.transform.position.x + 50f, AutoClick_Indicator.transform.position.y, AutoClick_Indicator.transform.position.z);
         Damage5x_Indicator_Pos = new Vector3(Damage5x_Indicator.transform.position.x + 50f, Damage5x_Indicator.transform.position.y, Damage5x_Indicator.transform.position.z);
 
-        Cost_txt.SetActive(false); // WARNING: Make it Disable after awake in start and do not Disable in scene view
+        Cost_txt.SetActive(false); // WARNING: Make it Disable after "awake" in "start" and do not Disable in scene view
     }
 
     [System.Obsolete]
@@ -345,7 +355,7 @@ public class GameController : MonoBehaviour
     //Calls a Insterstitial Ad after four heros are bought.
     private void Insterstitial_Ads_Caller()
     {
-        if (CountForAds >= 4)
+        if (CountForAds >= 8)
         {
             Unity_ad_Controller.GetComponent<UNITY_Interstitial_ADS>().ShowAd();
             CountForAds = 1;
@@ -481,5 +491,31 @@ public class GameController : MonoBehaviour
     public void Later_RateUs()
     {
         iTween.ScaleTo(RateUsPanel, iTween.Hash("scale", Vector3.zero, "time", ItweenTime));
+    }
+
+    public void OnInAppPurchase()
+    {
+        IsPurchased = true;
+
+        Purchase_btn.interactable = false;
+
+        BuyFromAds_btn.interactable = true;
+
+        // Auto Click Perminantly Activated
+        {
+            IsAutoClickActive = true;
+        }
+    }
+
+    public void PrivacyPolicy()
+    {
+        Application.OpenURL(PrivacyPolicy_Link);
+    }
+
+    public void RateUsLink()
+    {
+        Application.OpenURL(RateUs_Link);
+
+        RateUsPanel.SetActive(false);
     }
 }

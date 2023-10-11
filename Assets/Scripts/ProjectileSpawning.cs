@@ -45,7 +45,7 @@ public class ProjectileSpawning : MonoBehaviour
         Temp_SpawnDelay = GameController.GetComponent<SpeedUpgrade>().SpeedRatio;
 
         // Default Damage / Starting Damage
-        if (Damage <= float.Parse(TimesPower_txt.text))
+        if (Damage != float.Parse(TimesPower_txt.text))
         {
             IsDamageUpgraded = false;
 

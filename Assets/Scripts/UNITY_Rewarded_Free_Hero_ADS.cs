@@ -9,8 +9,12 @@ public class UNITY_Rewarded_Free_Hero_ADS : MonoBehaviour, IUnityAdsLoadListener
     [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
     string _adUnitId = null; // This will remain null for unsupported platforms
 
+    private GameObject GameController;
+
     void Awake()
     {
+        GameController = GameObject.Find("GameController");
+
         // Get the Ad Unit ID for the current platform:
         _adUnitId = _androidAdUnitId;
 
@@ -43,10 +47,14 @@ public class UNITY_Rewarded_Free_Hero_ADS : MonoBehaviour, IUnityAdsLoadListener
     // Implement a method to execute when the user clicks the button:
     public void ShowAd()
     {
-        // Disable the button:
-        _showAdButton.interactable = false;
-        // Then show the ad:
-        Advertisement.Show(_adUnitId, this);
+        // If IsPurchase is true then the purchase has been done so no Ads will be shown
+        if (GameController.GetComponent<GameController>().IsPurchased == false)
+        {
+            // Disable the button:
+            _showAdButton.interactable = false;
+            // Then show the ad:
+            Advertisement.Show(_adUnitId, this);
+        }
     }
 
     // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
@@ -56,6 +64,7 @@ public class UNITY_Rewarded_Free_Hero_ADS : MonoBehaviour, IUnityAdsLoadListener
         {
             Debug.Log("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
+            GameController.GetComponent<GameController>().BuyForAds();
         }
         LoadAd();
     }
