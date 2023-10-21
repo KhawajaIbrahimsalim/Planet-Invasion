@@ -10,6 +10,7 @@ public class UNITY_Rewarded_Free_Hero_ADS : MonoBehaviour, IUnityAdsLoadListener
     string _adUnitId = null; // This will remain null for unsupported platforms
 
     private GameObject GameController;
+    private bool Once = false;
 
     void Awake()
     {
@@ -50,6 +51,7 @@ public class UNITY_Rewarded_Free_Hero_ADS : MonoBehaviour, IUnityAdsLoadListener
         // If IsPurchase is true then the purchase has been done so no Ads will be shown
         if (GameController.GetComponent<GameController>().IsPurchased == false)
         {
+            Once = true;
             // Disable the button:
             _showAdButton.interactable = false;
             // Then show the ad:
@@ -65,6 +67,12 @@ public class UNITY_Rewarded_Free_Hero_ADS : MonoBehaviour, IUnityAdsLoadListener
             Debug.Log("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
             GameController.GetComponent<GameController>().BuyForAds();
+            if (Once)
+            {
+                GameController.GetComponent<SpawnNewMergableObjects>().SpawnObject();
+
+                Once = false;
+            }
         }
         LoadAd();
     }

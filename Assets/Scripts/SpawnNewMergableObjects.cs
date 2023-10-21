@@ -105,9 +105,9 @@ public class SpawnNewMergableObjects : MonoBehaviour
                     }
                 }
             }
+        }
 
-            // Make it false
-            GetComponent<GameController>().IsWithInCost = false;
-        }    
+        // Make it false
+        GetComponent<GameController>().IsWithInCost = false;
     }
 }
