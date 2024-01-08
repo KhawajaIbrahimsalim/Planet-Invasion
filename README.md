@@ -1,2 +1,2 @@
 # Planet-Invasion
-Project for a Studio.
+My Personal Project.
