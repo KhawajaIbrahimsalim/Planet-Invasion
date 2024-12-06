@@ -1,2 +1,2 @@
 # Planet-Invasion
-My Personal Project.
+A Collaborative Project.
